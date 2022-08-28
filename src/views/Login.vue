@@ -1,12 +1,15 @@
 <template>
   <div class="d-flex-justify-align-center login-container">
-    <button class="login-spotify-button" @click="loginWithSpotify">
+    <button class="login-spotify-button" @click="sendRequestToSpotify">
       Login with Spotify
     </button>
   </div>
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import authStore from "../store/auth";
+
 export default {
   name: "Login",
   data() {
@@ -17,7 +20,8 @@ export default {
     };
   },
   methods: {
-    async loginWithSpotify() {
+    ...mapActions(authStore, ["login"]),
+    async sendRequestToSpotify() {
       try {
         window.location.replace(this.AUTH_URL);
       } catch (e) {
@@ -30,6 +34,8 @@ export default {
       this.code = window.location.search.substring(6);
     } else {
       localStorage.setItem("code", this.code);
+      // console.log(this.code);
+      this.login(this.code);
       this.$router.push("/dashboard");
     }
   },

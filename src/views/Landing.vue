@@ -31,9 +31,5 @@ export default {
 </script>
 
 <style>
-.navbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+
 </style>
