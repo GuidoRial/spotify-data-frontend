@@ -67,6 +67,7 @@ export default {
     async getLyricsFromBackend(song) {
       // Get lyrics from Linkin Park's Numb
       let mySongLyrics = await this.getLyrics(song);
+      console.log(mySongLyrics);
     },
     logoutFromApp() {
       this.logout();
