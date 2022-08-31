@@ -1,5 +1,10 @@
 import axios from "axios";
 
 export default {
-  // Same as spotifyStore
+  getTracksAudioFeatures(id) {
+    return axios
+      .get(`http://localhost:3001/spotify/audio-features/${id}`)
+      .then((res) => res.data);
+  },
+  getAlbumAudioFeatures() {},
 };

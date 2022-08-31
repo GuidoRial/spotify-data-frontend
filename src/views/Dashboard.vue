@@ -30,6 +30,7 @@ import authStore from "../store/auth";
 import { mapActions, mapState } from "pinia";
 import SpotifyWebApi from "spotify-web-api-node";
 import lyricsStore from "../store/lyrics";
+import spotifyStore from "../store/spotify";
 
 export default {
   name: "dashboard",
@@ -46,9 +47,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(authStore, ["isLoggedIn"]),
+    ...mapState(authStore, ["isLoggedIn", "accessToken"]),
   },
-  mounted() {
+  async mounted() {
+    // console.log("here", this.accessToken);
     setTimeout(() => {
       if (!localStorage.getItem("access-token")) {
         console.log("Not logged in");
@@ -56,14 +58,24 @@ export default {
         return;
       }
     }, 1000);
-    if (this.accessToken) {
-      this.spotifyApi._credentials.accessToken = this.accessToken;
-    }
-  },
+    // Might fail if accessToken is not properly loaded to state
+    let audioFeatures = await this.getTrackAudioFeatures(
+      "11dFghVXANMlKmJXsNCbNl",
+      this.accessToken
+    );
 
+    let albumAudioFeatures = await this.getAlbumAudioFeatures(
+      "4aawyAB9vmqN3uQ7FjRGTy",
+      this.accessToken
+    );
+  },
   methods: {
     ...mapActions(authStore, ["logout"]),
     ...mapActions(lyricsStore, ["getLyrics"]),
+    ...mapActions(spotifyStore, [
+      "getTrackAudioFeatures",
+      "getAlbumAudioFeatures",
+    ]),
     async getLyricsFromBackend(song) {
       // Get lyrics from Linkin Park's Numb
       let mySongLyrics = await this.getLyrics(song);
@@ -108,9 +120,6 @@ export default {
         console.log(this.searchResults);
       });
     },
-  },
-  computed: {
-    ...mapState(authStore, ["accessToken"]),
   },
 };
 </script>
