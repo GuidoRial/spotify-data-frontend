@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import authStore from "../store/auth";
 
 export default {
@@ -18,6 +18,9 @@ export default {
         "https://accounts.spotify.com/authorize?client_id=765707358be3421695e00c9aebb02c4c&response_type=code&redirect_uri=http://localhost:8080/login&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state",
       code: window.location.search.substring(6),
     };
+  },
+  computed: {
+    ...mapState(authStore, ["isLoggedIn"]),
   },
   methods: {
     ...mapActions(authStore, ["login"]),
@@ -30,13 +33,18 @@ export default {
     },
   },
   mounted() {
+    if (localStorage.getItem("access-token")) {
+      console.log("Already logged in");
+      this.$router.push("dashboard");
+      return;
+    }
     if (!this.code) {
       this.code = window.location.search.substring(6);
     } else {
-      localStorage.setItem("code", this.code);
+      localStorage.setItem("code", JSON.stringify(this.code));
       // console.log(this.code);
       this.login(this.code);
-      this.$router.push("/dashboard");
+      this.$router.push("dashboard");
     }
   },
 };

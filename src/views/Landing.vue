@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
+import authStore from "../store/auth";
 export default {
   name: "landing",
   data() {
@@ -19,7 +21,13 @@ export default {
       code: window.location.search.substring(6),
     };
   },
+  computed: {
+    ...mapState(authStore, ["isLoggedIn"]),
+  },
   mounted() {
+    if (this.isLoggedIn) {
+      console.log("nice");
+    }
     // console.log(this.code);
     // if (this.code) {
     //   this.$router.push("/dashboard");
@@ -30,6 +38,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

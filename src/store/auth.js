@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import auth from "../service/auth";
 
 const authStore = defineStore("auth", {
   state: () => {
@@ -10,24 +10,38 @@ const authStore = defineStore("auth", {
       code: localStorage.getItem("code") || null,
     };
   },
+  getters: {
+    isLoggedIn(state) {
+      console.log("hOLA");
+      // console.log(localStorage.getItem("access-token"))
+      if (localStorage.getItem("access-token")) {
+        console.log(localStorage.getItem("access-token"));
+        return true;
+      } else return false;
+    },
+  },
   actions: {
-    login(code) {
-      // console.log(code);
-      axios
-        .post("http://localhost:3001/login", {
-          code,
-        })
-        .then((res) => {
-          this.accessToken = res.data.accessToken;
-          this.refreshToken = res.data.refreshToken;
-          this.expiresIn = res.data.expiresIn;
-          localStorage.setItem("access-token", this.accessToken);
-          localStorage.setItem("refresh-token", this.refreshToken);
-          localStorage.setItem("expires-in", this.expiresIn);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    async login(code) {
+      try {
+        const res = await auth.login(code);
+        this.accessToken = res.accessToken;
+        this.refreshToken = res.refreshToken;
+        this.expiresIn = res.expiresIn;
+        localStorage.setItem("access-token", this.accessToken);
+        localStorage.setItem("refresh-token", this.refreshToken);
+        localStorage.setItem("expires-in", this.expiresIn);
+      } catch (e) {
+        throw e;
+      }
+    },
+    logout() {
+      this.accessToken = null;
+      this.refreshToken = null;
+      this.expiresIn = null;
+      localStorage.removeItem("code");
+      localStorage.removeItem("access-token");
+      localStorage.removeItem("refresh-token");
+      localStorage.removeItem("expires-in");
     },
   },
 });
