@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import sentimentAnalysis from "../service/sentimentAnalysis";
 
 const spotifyStore = defineStore("spotifyStore", {
   state: () => {
@@ -103,8 +104,16 @@ const spotifyStore = defineStore("spotifyStore", {
             averageAudioFeatures[key] / albumAudioFeatures.length;
         }
 
-        console.log({ averageAudioFeatures, albumAudioFeatures });
         return { averageAudioFeatures, albumAudioFeatures };
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getSongSentimentAnalysis(song) {
+      try {
+        let response = await sentimentAnalysis.getSentimentAnalysis(song);
+
+        return response;
       } catch (e) {
         throw e;
       }

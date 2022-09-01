@@ -59,15 +59,27 @@ export default {
       }
     }, 1000);
     // Might fail if accessToken is not properly loaded to state
-    let audioFeatures = await this.getTrackAudioFeatures(
-      "11dFghVXANMlKmJXsNCbNl",
-      this.accessToken
-    );
+    // let audioFeatures = await this.getTrackAudioFeatures(
+    //   "11dFghVXANMlKmJXsNCbNl",
+    //   this.accessToken
+    // );
 
-    let albumAudioFeatures = await this.getAlbumAudioFeatures(
-      "4aawyAB9vmqN3uQ7FjRGTy",
-      this.accessToken
-    );
+    // let albumAudioFeatures = await this.getAlbumAudioFeatures(
+    //   "4aawyAB9vmqN3uQ7FjRGTy",
+    //   this.accessToken
+    // );
+
+    // let linkinParkSong = await this.getSongSentimentAnalysis({
+    //   artist: "Linkin Park",
+    //   track: "Numb",
+    // });
+    // console.log(linkinParkSong); // 0.0043859649122807015
+
+    // let PharrelWilliamsSong = await this.getSongSentimentAnalysis({
+    //   artist: "Pharrell Williams",
+    //   track: "Happy ",
+    // });
+    // console.log(PharrelWilliamsSong); //0.19230769230769232
   },
   methods: {
     ...mapActions(authStore, ["logout"]),
@@ -75,12 +87,8 @@ export default {
     ...mapActions(spotifyStore, [
       "getTrackAudioFeatures",
       "getAlbumAudioFeatures",
+      "getSongSentimentAnalysis",
     ]),
-    async getLyricsFromBackend(song) {
-      // Get lyrics from Linkin Park's Numb
-      let mySongLyrics = await this.getLyrics(song);
-      console.log(mySongLyrics);
-    },
     logoutFromApp() {
       this.logout();
       this.$router.push("login");
