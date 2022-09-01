@@ -109,9 +109,9 @@ const spotifyStore = defineStore("spotifyStore", {
         throw e;
       }
     },
-    async getSongSentimentAnalysis(song) {
+    async getSongSentimentAnalysis(song, language) {
       try {
-        let response = await sentimentAnalysis.getSentimentAnalysis(song);
+        let response = await sentimentAnalysis.getSentimentAnalysis(song, language);
 
         return response;
       } catch (e) {

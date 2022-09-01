@@ -69,18 +69,44 @@ export default {
     //   this.accessToken
     // );
 
-    // let linkinParkSong = await this.getSongSentimentAnalysis({
-    //   artist: "Linkin Park",
-    //   track: "Numb",
-    // });
-    // console.log(linkinParkSong); // 0.0043859649122807015
+  //   let linkinParkSong = await this.getSongSentimentAnalysis(
+  //     {
+  //       artist: "Linkin Park",
+  //       track: "Numb",
+  //     },
+  //     "English"
+  //   );
+  //   console.log(linkinParkSong); // 0.0043859649122807015
 
-    // let PharrelWilliamsSong = await this.getSongSentimentAnalysis({
-    //   artist: "Pharrell Williams",
-    //   track: "Happy ",
-    // });
-    // console.log(PharrelWilliamsSong); //0.19230769230769232
+  //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
+  //     {
+  //       artist: "Pharrell Williams",
+  //       track: "Happy ",
+  //     },
+  //     "English"
+  //   );
+
+  //   console.log(PharrelWilliamsSong); //0.19230769230769232
+
+  //   let laRengaSong = await this.getSongSentimentAnalysis(
+  //     {
+  //       artist: "La renga",
+  //       track: "Balada del diablo y la muerte",
+  //     },
+  //     "Spanish"
+  //   );
+  //   console.log(laRengaSong); // 0.017241379310344827
+
+  //   let almafuerteSong = await this.getSongSentimentAnalysis(
+  //     {
+  //       artist: "Almafuerte",
+  //       track: "A vos amigo",
+  //     },
+  //     "Spanish"
+  //   );
+  //   console.log(almafuerteSong); // 0.041666666666666664
   },
+
   methods: {
     ...mapActions(authStore, ["logout"]),
     ...mapActions(lyricsStore, ["getLyrics"]),
