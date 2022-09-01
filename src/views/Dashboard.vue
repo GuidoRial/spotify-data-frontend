@@ -126,7 +126,12 @@ export default {
 
     // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "US");
 
-    // this.compareArtistWithItsRelatedArtists("6XyY86QOPPrYVGvF9ch6wz", "US");
+    let data = await this.compareArtistWithItsRelatedArtists(
+      "6XyY86QOPPrYVGvF9ch6wz",
+      "US"
+    );
+    console.log(data);
+    // this.getAlbumAudioFeatures("4aawyAB9vmqN3uQ7FjRGTy");
   },
 
   methods: {
@@ -141,6 +146,8 @@ export default {
       "getArtistRelatedArtist",
       "getArtistTopTracks",
       "compareArtistWithItsRelatedArtists",
+      "getCurrentUsersTopArtists",
+      "getCurrentUsersProfile",
     ]),
     logoutFromApp() {
       this.logout();

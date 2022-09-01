@@ -2,6 +2,9 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
 
 # Spotify Data Analysis
 
+
+## TODO
+1. Export example data as JSON so that we don't have to call the API so much, especially for longer queries like comparing artists audio features
 ## Functionality
 
 - Get Track's Audio Features, show it using graphs [MVP]
