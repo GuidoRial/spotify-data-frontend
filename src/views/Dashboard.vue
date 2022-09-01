@@ -69,42 +69,58 @@ export default {
     //   this.accessToken
     // );
 
-  //   let linkinParkSong = await this.getSongSentimentAnalysis(
-  //     {
-  //       artist: "Linkin Park",
-  //       track: "Numb",
-  //     },
-  //     "English"
-  //   );
-  //   console.log(linkinParkSong); // 0.0043859649122807015
+    //   let linkinParkSong = await this.getSongSentimentAnalysis(
+    //     {
+    //       artist: "Linkin Park",
+    //       track: "Numb",
+    //     },
+    //     "English"
+    //   );
+    //   console.log(linkinParkSong); // 0.0043859649122807015
 
-  //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
-  //     {
-  //       artist: "Pharrell Williams",
-  //       track: "Happy ",
-  //     },
-  //     "English"
-  //   );
+    //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
+    //     {
+    //       artist: "Pharrell Williams",
+    //       track: "Happy ",
+    //     },
+    //     "English"
+    //   );
 
-  //   console.log(PharrelWilliamsSong); //0.19230769230769232
+    //   console.log(PharrelWilliamsSong); //0.19230769230769232
 
-  //   let laRengaSong = await this.getSongSentimentAnalysis(
-  //     {
-  //       artist: "La renga",
-  //       track: "Balada del diablo y la muerte",
-  //     },
-  //     "Spanish"
-  //   );
-  //   console.log(laRengaSong); // 0.017241379310344827
+    //   let laRengaSong = await this.getSongSentimentAnalysis(
+    //     {
+    //       artist: "La renga",
+    //       track: "Balada del diablo y la muerte",
+    //     },
+    //     "Spanish"
+    //   );
+    //   console.log(laRengaSong); // 0.017241379310344827
 
-  //   let almafuerteSong = await this.getSongSentimentAnalysis(
-  //     {
-  //       artist: "Almafuerte",
-  //       track: "A vos amigo",
-  //     },
-  //     "Spanish"
-  //   );
-  //   console.log(almafuerteSong); // 0.041666666666666664
+    //   let almafuerteSong = await this.getSongSentimentAnalysis(
+    //     {
+    //       artist: "Almafuerte",
+    //       track: "A vos amigo",
+    //     },
+    //     "Spanish"
+    //   );
+    //   console.log(almafuerteSong); // 0.041666666666666664
+
+    // this.searchForAlbum("Meteora", this.accessToken); // getOptions, show to user, they click and get id, then...
+
+    // this.getAlbumById("4Gfnly5CzMJQqkUFfoHaP3", this.accessToken);
+
+    // let AlbumSentimentAnalysis = await this.getAlbumSentimentAnalysis(
+    //   "4Gfnly5CzMJQqkUFfoHaP3",
+    //   "English"
+    // );
+
+    // console.log(AlbumSentimentAnalysis);
+
+    this.getAlbumSentimentAnalysisAndAudioFeatures(
+      "4Gfnly5CzMJQqkUFfoHaP3",
+      "English"
+    );
   },
 
   methods: {
@@ -114,6 +130,11 @@ export default {
       "getTrackAudioFeatures",
       "getAlbumAudioFeatures",
       "getSongSentimentAnalysis",
+      "searchForAlbum",
+      "getAlbumAudioFeatures",
+      "getAlbumById",
+      "getAlbumSentimentAnalysis",
+      "getAlbumSentimentAnalysisAndAudioFeatures",
     ]),
     logoutFromApp() {
       this.logout();

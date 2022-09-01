@@ -4,36 +4,48 @@ import sentimentAnalysis from "../service/sentimentAnalysis";
 
 const spotifyStore = defineStore("spotifyStore", {
   state: () => {
-    return {};
+    return {
+      optionsObject: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+        },
+      },
+      loading: false,
+      // add at the end
+    };
   },
   actions: {
     // Get track's audio features
-    async getTrackAudioFeatures(songId, access_token) {
+    async getTrackAudioFeatures(songId) {
       try {
         let result = await axios.get(
           `https://api.spotify.com/v1/audio-features/${songId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
+          this.optionsObject
         );
         return result.data;
       } catch (e) {
         throw e;
       }
     },
-    async getAlbumAudioFeatures(albumId, access_token) {
-      let optionsObject = {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      };
+    async searchForAlbum(q) {
+      // Return a list of options for the user to choose, then get the albumId when they clicks on it
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/search?type=album&q=${q}`,
+          this.optionsObject
+        );
+        let albumsOptions = res.data.albums.items;
+        return albumsOptions;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getAlbumAudioFeatures(albumId) {
       try {
         // Get album by id
         let res = await axios.get(
           `https://api.spotify.com/v1/albums/${albumId}`,
-          optionsObject
+          this.optionsObject
         );
 
         // Get every song id into this array
@@ -50,7 +62,7 @@ const spotifyStore = defineStore("spotifyStore", {
           `https://api.spotify.com/v1/audio-features?ids=${songsIdArray.join(
             ","
           )}`,
-          optionsObject
+          this.optionsObject
         );
 
         let albumAudioFeatures = response.data.audio_features;
@@ -111,9 +123,78 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getSongSentimentAnalysis(song, language) {
       try {
-        let response = await sentimentAnalysis.getSentimentAnalysis(song, language);
+        let response = await sentimentAnalysis.getSentimentAnalysis(
+          song,
+          language
+        );
 
         return response;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getAlbumById(albumId) {
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/albums/${albumId}`,
+          this.optionsObject
+        );
+        return res.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getAlbumSentimentAnalysis(albumId, language) {
+      try {
+        let album = await this.getAlbumById(albumId);
+        let albumTracks = album.tracks.items;
+
+        let sentimentAnalysisData = [];
+
+        for (let i = 0; i < albumTracks.length; i++) {
+          const song = {
+            id: albumTracks[i].id,
+            artist: album.artists[0].name,
+            track: albumTracks[i].name,
+          };
+
+          let response = await sentimentAnalysis.getSentimentAnalysis(
+            song,
+            language
+          );
+
+          sentimentAnalysisData.push({ response, song });
+        }
+
+        let albumSentimentAverage = 0;
+
+        for (let song of sentimentAnalysisData) {
+          albumSentimentAverage += song.response.songSentimentAnalysis;
+        }
+
+        albumSentimentAverage =
+          albumSentimentAverage / sentimentAnalysisData.length;
+
+        return {
+          artist: album.artists[0].name,
+          album: album.name,
+          albumSentimentAverage,
+          sentimentAnalysisData,
+        };
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getAlbumSentimentAnalysisAndAudioFeatures(albumId, language) {
+      try {
+        let albumSentimentAnalysis = await this.getAlbumSentimentAnalysis(
+          albumId,
+          language
+        );
+
+        let albumAudioFeatures = await this.getAlbumAudioFeatures(albumId);
+
+        console.log({ albumAudioFeatures, albumSentimentAnalysis });
       } catch (e) {
         throw e;
       }

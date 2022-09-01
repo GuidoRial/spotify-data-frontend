@@ -16,7 +16,7 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
   - Individual song analysis to see if it has a possitive or negative sentiment
   - Album analysis, to see the individual song and album average.
     - We could also calculate the saddest and happiest song for an album
-  - Artist analysis
+  - Artist analysis [Maybe post MVP because it'd take too long]
 
     - Global average
     - Get saddest and happiest album
