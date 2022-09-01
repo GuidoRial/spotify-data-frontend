@@ -27,6 +27,18 @@ const spotifyStore = defineStore("spotifyStore", {
         throw e;
       }
     },
+    async getTracksAudioFeatures(songsIds) {
+      try {
+        let result = await axios.get(
+          `https://api.spotify.com/v1/audio-features?ids=${songsIds}`,
+          this.optionsObject
+        );
+        return result.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+
     async searchForAlbum(q) {
       // Return a list of options for the user to choose, then get the albumId when they clicks on it
       try {
@@ -41,6 +53,7 @@ const spotifyStore = defineStore("spotifyStore", {
       }
     },
     async getAlbumAudioFeatures(albumId) {
+      // replace with getTracksAudioFeatures
       try {
         // Get album by id
         let res = await axios.get(
@@ -195,6 +208,107 @@ const spotifyStore = defineStore("spotifyStore", {
         let albumAudioFeatures = await this.getAlbumAudioFeatures(albumId);
 
         console.log({ albumAudioFeatures, albumSentimentAnalysis });
+      } catch (e) {
+        throw e;
+      }
+    },
+    async searchForArtist(q) {
+      // Return a list of options for the user to choose, then get the artistId when they clicks on it
+      //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/search?type=artist&q=${q}`,
+          this.optionsObject
+        );
+        let artistOptions = res.data.artists.items;
+
+        return artistOptions;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getArtistRelatedArtist(artistId) {
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/artists/${artistId}/related-artists`,
+          this.optionsObject
+        );
+        let relatedArtists = res.data.artists;
+        return relatedArtists;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getArtistTopTracks(artistId, country) {
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`,
+          this.optionsObject
+        );
+
+        let topTracks = res.data;
+        return topTracks;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async compareArtistWithItsRelatedArtists(artistId, country) {
+      try {
+        // Get primary artist data
+        let res = await this.getArtistTopTracks(artistId, country);
+        let primaryArtistTopTracks = res.tracks;
+        let primaryArtistTopTracksIds = [];
+
+        for (let track of primaryArtistTopTracks) {
+          primaryArtistTopTracksIds.push(track.id);
+        }
+
+        let primaryArtistAudioFeatures = await this.getTracksAudioFeatures(
+          primaryArtistTopTracksIds.join(",")
+        );
+
+        let primaryArtistData = {
+          primaryArtistTopTracks,
+          primaryArtistAudioFeatures,
+        };
+
+        // Get primary artist data
+
+        // Get related artists data
+        let relatedArtists = await this.getArtistRelatedArtist(artistId);
+
+        let relatedArtistsIds = [];
+
+        for (let track of relatedArtists) {
+          relatedArtistsIds.push(track.id);
+        }
+        console.log("loading...");
+        let relatedArtistsData = {};
+
+        for (let i = 0; i < relatedArtistsIds.length; i++) {
+          let response = await this.getArtistTopTracks(
+            relatedArtistsIds[i],
+            country
+          );
+          let artistTopTracks = response.tracks;
+          let artistName = artistTopTracks[0].artists[0].name;
+
+          let artistTopTracksAudioFeatures = [];
+
+          for (let track of artistTopTracks) {
+            let trackAudioFeatures = await this.getTrackAudioFeatures(track.id);
+            artistTopTracksAudioFeatures.push(trackAudioFeatures);
+          }
+          relatedArtistsData[artistName] = {
+            artistTopTracks,
+            artistTopTracksAudioFeatures,
+          };
+        }
+
+        console.log("done...");
+
+        return { primaryArtistData, relatedArtistsData };
+        // Get related artists data
       } catch (e) {
         throw e;
       }

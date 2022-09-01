@@ -27,10 +27,10 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
 
 - Compare artist to each other [MVP]
 
-  1. Get an artist through user Input
-  2. Get related artists
-  3. Get the top 10 songs from each of those artist
-  4. How do those compare? How are those artist related? Do they make the same kind of music?
+  1. Get an artist through user Input - searchArtist
+  2. Get related artists - Get Artist's Related Artists
+  3. Get the top 10 songs from each of those artist - Get Artist's Top Tracks
+  4. How do those compare? How are those artist related? Do they make the same kind of music? Get Tracks' Audio Features
   5. Graph it
 
 - Easily create playlist [MVP]

@@ -117,24 +117,30 @@ export default {
 
     // console.log(AlbumSentimentAnalysis);
 
-    this.getAlbumSentimentAnalysisAndAudioFeatures(
-      "4Gfnly5CzMJQqkUFfoHaP3",
-      "English"
-    );
+    // this.getAlbumSentimentAnalysisAndAudioFeatures(
+    //   "4Gfnly5CzMJQqkUFfoHaP3",
+    //   "English"
+    // );
+
+    // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "AR");
+
+    // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "US");
+
+    // this.compareArtistWithItsRelatedArtists("6XyY86QOPPrYVGvF9ch6wz", "US");
   },
 
   methods: {
     ...mapActions(authStore, ["logout"]),
     ...mapActions(lyricsStore, ["getLyrics"]),
     ...mapActions(spotifyStore, [
-      "getTrackAudioFeatures",
-      "getAlbumAudioFeatures",
-      "getSongSentimentAnalysis",
-      "searchForAlbum",
       "getAlbumAudioFeatures",
       "getAlbumById",
       "getAlbumSentimentAnalysis",
       "getAlbumSentimentAnalysisAndAudioFeatures",
+      "searchForArtist",
+      "getArtistRelatedArtist",
+      "getArtistTopTracks",
+      "compareArtistWithItsRelatedArtists",
     ]),
     logoutFromApp() {
       this.logout();
