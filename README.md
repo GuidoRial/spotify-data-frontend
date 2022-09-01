@@ -53,3 +53,10 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
   - Get lyrics for all of those songs
   - Calculate the most common words
   - Word cloud
+  1. Get Artist's Albums
+  2. Get Several Albums => push ids to an array, get array length
+  3. Get Several Tracks (50 at a time)
+  4. Sort by popularity
+  5. Get top 50
+  6. Get lyrics
+  7. Calculate most common words, return

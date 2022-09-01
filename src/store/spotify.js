@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import sentimentAnalysis from "../service/sentimentAnalysis";
+import mostCommonWords from "../service/mostCommonWords";
 
 const spotifyStore = defineStore("spotifyStore", {
   state: () => {
@@ -329,6 +330,151 @@ const spotifyStore = defineStore("spotifyStore", {
           this.optionsObject
         );
         return res.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getArtistsAlbums(artistId) {
+      // gets a list of albums
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`,
+          this.optionsObject
+        );
+        return res.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getSeveralAlbums(albumsIds) {
+      // gets a list of albums
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/albums?ids=${albumsIds}`,
+          this.optionsObject
+        );
+        return res.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getSeveraltracks(tracksIds) {
+      // gets a list of albums
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/tracks?ids=${tracksIds}`,
+          this.optionsObject
+        );
+        return res.data;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async callFunctionPerChunks(chunkSize, cb, idsArray, albumsOrTracks) {
+      const queue = [];
+      let answer = [];
+      for (let i = 0; i < idsArray.length; i += chunkSize) {
+        const chunk = idsArray.slice(i, i + chunkSize);
+        queue.push(chunk);
+      }
+
+      for (let i = 0; i < queue.length; i++) {
+        let response = await cb(queue[i].join(","));
+        answer = [...answer, ...response[albumsOrTracks]];
+      }
+      return answer;
+    },
+    async getMostReppeatedWordWithinAnArtist(artistId, language) {
+      try {
+        let res = await this.getArtistsAlbums(artistId);
+        let artistAlbums = res.items;
+
+        let albumsIds = [];
+
+        for (let album of artistAlbums) {
+          albumsIds.push(album.id);
+        }
+
+        let albums;
+        if (albumsIds.length > 20) {
+          albums = await this.callFunctionPerChunks(
+            20, //max amount supported
+            this.getSeveralAlbums,
+            albumsIds,
+            "albums"
+          );
+        } else {
+          let data = await this.getSeveralAlbums(albumsIds.join(","));
+          albums = data.albums;
+        }
+
+        let tracksIds = [];
+
+        for (let album of albums) {
+          let tracks = album.tracks.items;
+          for (let track of tracks) {
+            tracksIds.push(track.id);
+          }
+        }
+
+        let tracks = await this.callFunctionPerChunks(
+          50,
+          this.getSeveraltracks,
+          tracksIds,
+          "tracks"
+        );
+        tracks.sort((a, b) => b.popularity - a.popularity);
+
+        console.log("tracks regarding popularity");
+        console.log(tracks);
+
+        tracks.splice(40, tracks.length - 50);
+
+        // for (let i = 0; i < tracks.length; i++) {
+        //   // Delete not famous songs?
+        //   if (tracks[i].popularity < 40) {
+        //     tracks.splice(tracks[i], i);
+        //     i--;
+        //   }
+        // }
+
+        console.log("tracks with the most popularity");
+        console.log(tracks);
+
+        let songsArray = [];
+
+        for (let i = 0; i < tracks.length; i++) {
+          songsArray.push({
+            artist: tracks[i].artists[0].name,
+            track: tracks[i].name,
+          });
+        }
+
+        console.log("loading");
+
+        let appearancesOfWords = {};
+        const queue = [];
+        for (let i = 0; i < songsArray.length; i += 10) {
+          const chunk = songsArray.slice(i, i + 10);
+          queue.push(chunk);
+        }
+
+        for (let i = 0; i < queue.length; i++) {
+          let analizedWordsFromBackend =
+            await mostCommonWords.getMostCommonWords(JSON.stringify(queue[i]));
+
+          console.log(analizedWordsFromBackend);
+          // for (let [key, value] of Object.entries(analizedWordsFromBackend)) {
+          //   if (!appearancesOfWords[key]) {
+          //     appearancesOfWords[key] = 0;
+          //   } else {
+          //     appearancesOfWords[key] += analizedWordsFromBackend[key];
+          //   }
+          // }
+        }
+
+        console.log("done");
+        console.log(appearancesOfWords);
       } catch (e) {
         throw e;
       }

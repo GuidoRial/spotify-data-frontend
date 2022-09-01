@@ -12,10 +12,7 @@ const authStore = defineStore("auth", {
   },
   getters: {
     isLoggedIn(state) {
-      console.log("hOLA");
-      // console.log(localStorage.getItem("access-token"))
       if (localStorage.getItem("access-token")) {
-        console.log(localStorage.getItem("access-token"));
         return true;
       } else return false;
     },

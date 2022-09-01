@@ -69,14 +69,14 @@ export default {
     //   this.accessToken
     // );
 
-    //   let linkinParkSong = await this.getSongSentimentAnalysis(
-    //     {
-    //       artist: "Linkin Park",
-    //       track: "Numb",
-    //     },
-    //     "English"
-    //   );
-    //   console.log(linkinParkSong); // 0.0043859649122807015
+    let linkinParkSong = await this.getSongSentimentAnalysis(
+      {
+        artist: "Linkin Park",
+        track: "Numb",
+      },
+      "English"
+    );
+    console.log(linkinParkSong); // 0.0043859649122807015
 
     //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
     //     {
@@ -126,12 +126,14 @@ export default {
 
     // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "US");
 
-    let data = await this.compareArtistWithItsRelatedArtists(
-      "6XyY86QOPPrYVGvF9ch6wz",
-      "US"
-    );
-    console.log(data);
+    // let data = await this.compareArtistWithItsRelatedArtists(
+    //   "6XyY86QOPPrYVGvF9ch6wz",
+    //   "US"
+    // );
+    // console.log(data);
     // this.getAlbumAudioFeatures("4aawyAB9vmqN3uQ7FjRGTy");
+
+    // this.getMostReppeatedWordWithinAnArtist("6XyY86QOPPrYVGvF9ch6wz");
   },
 
   methods: {
@@ -145,8 +147,10 @@ export default {
       "searchForArtist",
       "getArtistRelatedArtist",
       "getArtistTopTracks",
+      "getSongSentimentAnalysis",
       "compareArtistWithItsRelatedArtists",
       "getCurrentUsersTopArtists",
+      "getMostReppeatedWordWithinAnArtist",
       "getCurrentUsersProfile",
     ]),
     logoutFromApp() {
