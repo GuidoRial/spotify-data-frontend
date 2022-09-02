@@ -49,7 +49,7 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
   - Same thing but with popular songs
 
 - Most reppeated word within an artist
-  - Get top 50 songs
+  - Get top 30 songs - What do these songs say that make them the most famous?
   - Get lyrics for all of those songs
   - Calculate the most common words
   - Word cloud
