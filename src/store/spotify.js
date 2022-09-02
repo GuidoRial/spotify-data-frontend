@@ -17,11 +17,13 @@ const spotifyStore = defineStore("spotifyStore", {
   },
   actions: {
     async getTrackAudioFeatures(songId) {
+      // Get artist and track data into object before sending it
       try {
         let result = await axios.get(
           `https://api.spotify.com/v1/audio-features/${songId}`,
           this.optionsObject
         );
+
         return result.data;
       } catch (e) {
         throw e;
@@ -75,7 +77,7 @@ const spotifyStore = defineStore("spotifyStore", {
 
         let albumAudioFeatures = response.audio_features;
 
-        // Add every interesting value to get the average later
+        // // Add every interesting value to get the average later
         let averageAudioFeatures = {
           // We said we'd use Danceability, Energy, Valence, Instrumentalness, Loudness, Tempo
           // But while we're here I might as well
@@ -105,6 +107,7 @@ const spotifyStore = defineStore("spotifyStore", {
 
           // Add every usefull information to the averageAudioFeatures object
           // After the end of the loop we'll get the average
+
           averageAudioFeatures.acousticness +=
             albumAudioFeatures[i].acousticness;
           averageAudioFeatures.danceability +=
@@ -257,10 +260,10 @@ const spotifyStore = defineStore("spotifyStore", {
         for (let track of primaryArtistTopTracks) {
           primaryArtistTopTracksIds.push(track.id);
         }
-
-        let primaryArtistAudioFeatures = await this.getTracksAudioFeatures(
+        let result = await this.getTracksAudioFeatures(
           primaryArtistTopTracksIds.join(",")
         );
+        let primaryArtistAudioFeatures = result.audio_features;
 
         let primaryArtistData = {
           primaryArtistTopTracks,
@@ -359,7 +362,6 @@ const spotifyStore = defineStore("spotifyStore", {
       }
     },
     async getSeveraltracks(tracksIds) {
-      // gets a list of albums
       try {
         let res = await axios.get(
           `https://api.spotify.com/v1/tracks?ids=${tracksIds}`,
@@ -441,40 +443,36 @@ const spotifyStore = defineStore("spotifyStore", {
         console.log("tracks with the most popularity");
         console.log(tracks);
 
-        let songsArray = [];
+        // let songsArray = [];
 
-        for (let i = 0; i < tracks.length; i++) {
-          songsArray.push({
-            artist: tracks[i].artists[0].name,
-            track: tracks[i].name,
-          });
-        }
+        // for (let i = 0; i < tracks.length; i++) {
+        //   songsArray.push({
+        //     artist: tracks[i].artists[0].name,
+        //     track: tracks[i].name,
+        //   });
+        // }
 
-        console.log("loading");
+        // console.log("loading");
 
-        let appearancesOfWords = {};
-        const queue = [];
-        for (let i = 0; i < songsArray.length; i += 10) {
-          const chunk = songsArray.slice(i, i + 10);
-          queue.push(chunk);
-        }
+        // let appearancesOfWords = {};
+        // const queue = [];
+        // for (let i = 0; i < songsArray.length; i += 10) {
+        //   const chunk = songsArray.slice(i, i + 10);
+        //   queue.push(chunk);
+        // }
 
-        for (let i = 0; i < queue.length; i++) {
-          let analizedWordsFromBackend =
-            await mostCommonWords.getMostCommonWords(JSON.stringify(queue[i]));
+        // for (let i = 0; i < queue.length; i++) {
+        //   let analizedWordsFromBackend =
+        //     await mostCommonWords.getMostCommonWords(JSON.stringify(queue[i]));
 
-          console.log(analizedWordsFromBackend);
-          // for (let [key, value] of Object.entries(analizedWordsFromBackend)) {
-          //   if (!appearancesOfWords[key]) {
-          //     appearancesOfWords[key] = 0;
-          //   } else {
-          //     appearancesOfWords[key] += analizedWordsFromBackend[key];
-          //   }
-          // }
-        }
-
-        console.log("done");
-        console.log(appearancesOfWords);
+        //   console.log(analizedWordsFromBackend);
+        // for (let [key, value] of Object.entries(analizedWordsFromBackend)) {
+        //   if (!appearancesOfWords[key]) {
+        //     appearancesOfWords[key] = 0;
+        //   } else {
+        //     appearancesOfWords[key] += analizedWordsFromBackend[key];
+        //   }
+        // }
       } catch (e) {
         throw e;
       }

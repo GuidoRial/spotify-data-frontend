@@ -60,23 +60,22 @@ export default {
     }, 1000);
     // Might fail if accessToken is not properly loaded to state
     // let audioFeatures = await this.getTrackAudioFeatures(
-    //   "11dFghVXANMlKmJXsNCbNl",
-    //   this.accessToken
+    //   "11dFghVXANMlKmJXsNCbNl"
     // );
-
+    // console.log(audioFeatures);
     // let albumAudioFeatures = await this.getAlbumAudioFeatures(
     //   "4aawyAB9vmqN3uQ7FjRGTy",
     //   this.accessToken
     // );
 
-    let linkinParkSong = await this.getSongSentimentAnalysis(
-      {
-        artist: "Linkin Park",
-        track: "Numb",
-      },
-      "English"
-    );
-    console.log(linkinParkSong); // 0.0043859649122807015
+    // let linkinParkSong = await this.getSongSentimentAnalysis(
+    //   {
+    //     artist: "Linkin Park",
+    //     track: "Numb",
+    //   },
+    //   "English"
+    // );
+    // console.log(linkinParkSong); // 0.0043859649122807015
 
     //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
     //     {
@@ -88,14 +87,14 @@ export default {
 
     //   console.log(PharrelWilliamsSong); //0.19230769230769232
 
-    //   let laRengaSong = await this.getSongSentimentAnalysis(
-    //     {
-    //       artist: "La renga",
-    //       track: "Balada del diablo y la muerte",
-    //     },
-    //     "Spanish"
-    //   );
-    //   console.log(laRengaSong); // 0.017241379310344827
+    // let laRengaSong = await this.getSongSentimentAnalysis(
+    //   {
+    //     artist: "La renga",
+    //     track: "Balada del diablo y la muerte",
+    //   },
+    //   "Spanish"
+    // );
+    // console.log(laRengaSong); // 0.017241379310344827
 
     //   let almafuerteSong = await this.getSongSentimentAnalysis(
     //     {
@@ -106,7 +105,7 @@ export default {
     //   );
     //   console.log(almafuerteSong); // 0.041666666666666664
 
-    // this.searchForAlbum("Meteora", this.accessToken); // getOptions, show to user, they click and get id, then...
+    // console.log(await this.searchForAlbum("Meteora")); // getOptions, show to user, they click and get id, then...
 
     // this.getAlbumById("4Gfnly5CzMJQqkUFfoHaP3", this.accessToken);
 
@@ -131,7 +130,7 @@ export default {
     //   "US"
     // );
     // console.log(data);
-    // this.getAlbumAudioFeatures("4aawyAB9vmqN3uQ7FjRGTy");
+    // await this.getAlbumAudioFeatures("4aawyAB9vmqN3uQ7FjRGTy");
 
     // this.getMostReppeatedWordWithinAnArtist("6XyY86QOPPrYVGvF9ch6wz");
   },
@@ -140,6 +139,7 @@ export default {
     ...mapActions(authStore, ["logout"]),
     ...mapActions(lyricsStore, ["getLyrics"]),
     ...mapActions(spotifyStore, [
+      "getTrackAudioFeatures",
       "getAlbumAudioFeatures",
       "getAlbumById",
       "getAlbumSentimentAnalysis",
@@ -148,6 +148,7 @@ export default {
       "getArtistRelatedArtist",
       "getArtistTopTracks",
       "getSongSentimentAnalysis",
+      "searchForAlbum",
       "compareArtistWithItsRelatedArtists",
       "getCurrentUsersTopArtists",
       "getMostReppeatedWordWithinAnArtist",
