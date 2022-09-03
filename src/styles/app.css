@@ -1,9 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-* {
-  border: 0;
+*,
+html {
   padding: 0;
+  margin: 0;
   font-family: "Roboto", sans-serif;
+}
+:root {
+  --spotify-green: #2aa648;
+  --white: #fff;
+  --black: #121212;
+  --dark-brown: #2a2b2a;
+  --dark-gray: #a9a9a9;
 }
 
 .d-flex-justify-align-center {
@@ -24,8 +32,6 @@ ul {
   list-style: none;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.font-weight-bold {
+  font-weight: 700;
 }
