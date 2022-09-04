@@ -69,10 +69,11 @@ export default {
   align-items: center;
 }
 .login-spotify-button {
+  border: none;
   width: 12rem;
   height: 3rem;
-  background-color: #2aa648;
-  color: #fff;
+  background-color: var(--spotify-green);
+  color: var(--white);
   font-weight: 700;
   cursor: pointer;
   border-radius: 7px;

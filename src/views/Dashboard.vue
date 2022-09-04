@@ -1,56 +1,124 @@
 <template>
-  <nav class="navbar">
-    <h2>Dashboard</h2>
-    <button @click="logoutFromApp">Log out</button>
-  </nav>
-  <div>
-    <input
-      type="text"
-      v-model="searchBar"
-      placeholder="Search for Artists/bands"
-    />
-    <button type="submit" @click="search($event)">Search</button>
-  </div>
-  <div v-for="(track, i) in searchResults" :key="i" @click="handlePlay">
-    <img :src="track.albumUrl" />
-    <div>Title: {{ track.title }}</div>
-    <div>Artist: {{ track.artist }}</div>
-  </div>
-  <div>
-    <button @click="testFn">Test here</button>
-    <button
-      @click="getLyricsFromBackend({ artist: 'Linkin Park', track: 'Numb' })"
-    >
-      Get lyrics
-    </button>
+  <Navbar />
+  <div class="individual-functionality-container">
+    <div class="functionality-section">
+      <h2 class="section-title">Audio features</h2>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">
+          Get Track's Audio Features
+        </p>
+        <p class="functionality-description">
+          ⎼ Understand why a song sounds the way it does
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button
+          class="go-to-functionality-button"
+          @click="redirectToChildren({ name: 'get-track-audio-features' })"
+        >
+          Go
+        </button>
+      </div>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">
+          Get Album's Audio Features
+        </p>
+        <p class="functionality-description">
+          ⎼ Dig deep into an album, understand and compare songs to each other
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button
+          class="go-to-functionality-button"
+          @click="redirectToChildren({ name: 'get-album-audio-features' })"
+        >
+          Go
+        </button>
+      </div>
+    </div>
+    <div class="functionality-section">
+      <h2 class="section-title">Understanding Artists</h2>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">
+          Compare artist to their related artists
+        </p>
+        <p class="functionality-description">
+          ⎼ Find an artist you like, compare their top 10 songs with their
+          related artists' top 10
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button class="go-to-functionality-button">Go</button>
+      </div>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">
+          Compare artist to other artists you like
+        </p>
+        <p class="functionality-description">
+          ⎼ Select a few artist and compare their most famous songs
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button class="go-to-functionality-button">Go</button>
+      </div>
+    </div>
+
+    <div class="functionality-section">
+      <h2 class="section-title">Creating playlists</h2>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">Hidden Gems</p>
+        <p class="functionality-description">
+          ⎼ Give us a few artists you like and what kind of music you want,
+          we'll take care of the rest
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button class="go-to-functionality-button">Go</button>
+      </div>
+    </div>
+    <div class="individual-functionality-item">
+      <div class="functionality-title-and-description">
+        <p class="font-weight-bold functionality-title">
+          Easily create playlists
+        </p>
+        <p class="functionality-description">
+          ⎼ You tell us what you want, we'll use Spotify's API to give it to you
+          :)
+        </p>
+      </div>
+      <div class="functionality-call-to-action">
+        <button class="go-to-functionality-button">Go</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import authStore from "../store/auth";
-import { mapActions, mapState } from "pinia";
-import SpotifyWebApi from "spotify-web-api-node";
+import { mapActions } from "pinia";
 import lyricsStore from "../store/lyrics";
-import spotifyStore from "../store/spotify";
+import Navbar from "../components/Navbar.vue";
 
 export default {
   name: "dashboard",
   data() {
     return {
       code: localStorage.getItem("code"),
-      searchBar: null,
-      spotifyApi: new SpotifyWebApi({
-        clientId: "765707358be3421695e00c9aebb02c4c",
-        accessToken: localStorage.getItem("access-token"),
-      }),
-      searchResults: [],
-      lyrics: [],
     };
   },
-  computed: {
-    ...mapState(authStore, ["isLoggedIn", "accessToken"]),
+  components: {
+    Navbar,
   },
   async mounted() {
-    // console.log("here", this.accessToken);
     setTimeout(() => {
       if (!localStorage.getItem("access-token")) {
         console.log("Not logged in");
@@ -58,141 +126,72 @@ export default {
         return;
       }
     }, 1000);
-    // Might fail if accessToken is not properly loaded to state
-    // let audioFeatures = await this.getTrackAudioFeatures(
-    //   "11dFghVXANMlKmJXsNCbNl"
-    // );
-    // console.log(audioFeatures);
-    // let albumAudioFeatures = await this.getAlbumAudioFeatures(
-    //   "4aawyAB9vmqN3uQ7FjRGTy",
-    //   this.accessToken
-    // );
-
-    // let linkinParkSong = await this.getSongSentimentAnalysis(
-    //   {
-    //     artist: "Linkin Park",
-    //     track: "Numb",
-    //   },
-    //   "English"
-    // );
-    // console.log(linkinParkSong); // 0.0043859649122807015
-
-    //   let PharrelWilliamsSong = await this.getSongSentimentAnalysis(
-    //     {
-    //       artist: "Pharrell Williams",
-    //       track: "Happy ",
-    //     },
-    //     "English"
-    //   );
-
-    //   console.log(PharrelWilliamsSong); //0.19230769230769232
-
-    // let laRengaSong = await this.getSongSentimentAnalysis(
-    //   {
-    //     artist: "La renga",
-    //     track: "Balada del diablo y la muerte",
-    //   },
-    //   "Spanish"
-    // );
-    // console.log(laRengaSong); // 0.017241379310344827
-
-    //   let almafuerteSong = await this.getSongSentimentAnalysis(
-    //     {
-    //       artist: "Almafuerte",
-    //       track: "A vos amigo",
-    //     },
-    //     "Spanish"
-    //   );
-    //   console.log(almafuerteSong); // 0.041666666666666664
-
-    // console.log(await this.searchForAlbum("Meteora")); // getOptions, show to user, they click and get id, then...
-
-    // this.getAlbumById("4Gfnly5CzMJQqkUFfoHaP3", this.accessToken);
-
-    // let AlbumSentimentAnalysis = await this.getAlbumSentimentAnalysis(
-    //   "4Gfnly5CzMJQqkUFfoHaP3",
-    //   "English"
-    // );
-
-    // console.log(AlbumSentimentAnalysis);
-
-    // this.getAlbumSentimentAnalysisAndAudioFeatures(
-    //   "4Gfnly5CzMJQqkUFfoHaP3",
-    //   "English"
-    // );
-
-    // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "AR");
-
-    // this.getArtistTopTracks("6XyY86QOPPrYVGvF9ch6wz", "US");
-
-    // let data = await this.compareArtistWithItsRelatedArtists(
-    //   "6XyY86QOPPrYVGvF9ch6wz",
-    //   "US"
-    // );
-    // console.log(data);
-    // await this.getAlbumAudioFeatures("4aawyAB9vmqN3uQ7FjRGTy");
-
-    // this.getMostReppeatedWordWithinAnArtist("6XyY86QOPPrYVGvF9ch6wz");
   },
-
   methods: {
     ...mapActions(authStore, ["logout"]),
     ...mapActions(lyricsStore, ["getLyrics"]),
-    ...mapActions(spotifyStore, [
-      "getTrackAudioFeatures",
-      "getAlbumAudioFeatures",
-      "getAlbumById",
-      "getAlbumSentimentAnalysis",
-      "getAlbumSentimentAnalysisAndAudioFeatures",
-      "searchForArtist",
-      "getArtistRelatedArtist",
-      "getArtistTopTracks",
-      "getSongSentimentAnalysis",
-      "searchForAlbum",
-      "compareArtistWithItsRelatedArtists",
-      "getCurrentUsersTopArtists",
-      "getMostReppeatedWordWithinAnArtist",
-      "getCurrentUsersProfile",
-    ]),
-    logoutFromApp() {
-      this.logout();
-      this.$router.push("login");
-    },
-    // testFn() {
-    //   // console.log(this.spotifyApi);
-    //   this.spotifyApi
-    //     // .searchArtists("Son")
-    //     // .searchTracks("numb")
-    //     .getArtist("2hazSY4Ef3aB9ATXW7F5w3")
-    //     // .getMyTopArtists()
-    //     .then((res) => console.log(res))
-    //     .catch((e) => console.log(e));
-    // },
-    search(e) {
-      e.preventDefault();
-      if (!this.searchBar) this.searchResults = [];
-      if (!this.accessToken) return;
-
-      this.spotifyApi.searchTracks(this.searchBar).then((res) => {
-        this.searchResults = res.body.tracks.items.map((track) => {
-          const smallestAlbumImage = track.album.images.reduce(
-            (smallest, image) => {
-              if (image.height < smallest.height) return image;
-              return smallest;
-            },
-            track.album.images[0]
-          );
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: smallestAlbumImage.url,
-          };
-        });
-
-        console.log(this.searchResults);
-      });
+    redirectToChildren(route) {
+      this.$router.push(route);
     },
   },
 };
 </script>
+<style>
+.functionality-section {
+  display: flex;
+  justify-content: center;
+}
+.section-title {
+  margin-top: 0.5rem;
+  color: var(--spotify-green) !important;
+}
+.individual-functionality-container {
+  background-color: var(--black);
+  padding: 1rem;
+  height: 86vh;
+}
+.individual-functionality-item {
+  border-bottom: 1px solid var(--spotify-green);
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem;
+}
+.functionality-title-and-description {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  justify-content: center;
+}
+.functionality-title {
+  font-size: 1.1rem;
+  color: var(--white);
+}
+.functionality-description {
+  font-size: 1.1rem;
+  color: var(--dark-gray);
+}
+.go-to-functionality-button {
+  background-color: var(--black);
+  border: 1px solid var(--spotify-green);
+  width: 5rem;
+  height: 1.5rem;
+  color: var(--spotify-green);
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.go-to-functionality-button:hover {
+  background-color: var(--spotify-green);
+  color: var(--black);
+  opacity: 0.95;
+}
+</style>

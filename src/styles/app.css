@@ -1,9 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-* {
-  border: 0;
+*,
+html {
   padding: 0;
+  margin: 0;
   font-family: "Roboto", sans-serif;
+  outline: none;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --spotify-green: #2aa648;
+  --white: #fff;
+  --black: #121212;
+  --spotify-gray: #181818;
+  --dark-gray: #a9a9a9;
+  --gray: #9a9a9a;
 }
 
 .d-flex-justify-align-center {
@@ -24,8 +36,10 @@ ul {
   list-style: none;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.font-weight-bold {
+  font-weight: 700;
+}
+
+.color-white {
+  color: var(--white);
 }
