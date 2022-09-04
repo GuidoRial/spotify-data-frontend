@@ -1,9 +1,13 @@
 <template>
   <nav class="navbar">
-    <h2 @click="redirectToDashboard">Dashboard</h2>
-    <button class="logout-spotify-button" @click="logoutFromApp">
-      <font-awesome-icon icon="fa-brands fa-spotify" />Log out
-    </button>
+    <h2>Spotify Data Visualizer</h2>
+    <div class="navbar-sections">
+      <p class="navbar-section" @click="redirectToDashboard">Dashboard</p>
+      <p class="navbar-section">About us</p>
+      <button class="logout-spotify-button" @click="logoutFromApp">
+        <font-awesome-icon icon="fa-brands fa-spotify" />Log out
+      </button>
+    </div>
   </nav>
 </template>
 <script>
@@ -15,7 +19,7 @@ export default {
     ...mapActions(authStore, ["logout"]),
     logoutFromApp() {
       this.logout();
-      this.$router.push("login");
+      this.$router.push({ name: "login" });
     },
     redirectToDashboard() {
       this.$router.push({ name: "dashboard" });
@@ -24,6 +28,19 @@ export default {
 };
 </script>
 <style>
+.navbar-sections {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.navbar-section {
+  cursor: pointer;
+  color: var(--white);
+  font-size: 1.3rem;
+}
+.navbar-section:hover {
+  border-bottom: 1px solid var(--white);
+}
 .navbar {
   background-color: var(--black);
   display: flex;
@@ -48,7 +65,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
+  gap: 0.8rem;
 }
 
 .logout-spotify-button:hover {

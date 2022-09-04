@@ -16,15 +16,40 @@ const spotifyStore = defineStore("spotifyStore", {
     };
   },
   actions: {
-    async getTrackAudioFeatures(songId) {
+    async getTrackById(id) {
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/tracks/${id}`,
+          this.optionsObject
+        );
+        let response = res.data;
+        let song = {
+          songUri: response.uri,
+          track_name: response.name,
+          track_id: response.id,
+          duration: response.duration_ms,
+          artist_name: response.artists[0].name,
+          artist_id: response.artists[0].id,
+          album_name: response.album.name,
+          album_image: response.album.images[0].url,
+          album_id: response.album.id,
+        };
+        return song;
+      } catch (e) {
+        throw e;
+      }
+    },
+    async getTrackAudioFeatures(id) {
       // Get artist and track data into object before sending it
       try {
         let result = await axios.get(
-          `https://api.spotify.com/v1/audio-features/${songId}`,
+          `https://api.spotify.com/v1/audio-features/${id}`,
           this.optionsObject
         );
 
-        return result.data;
+        let song = await this.getTrackById(id);
+
+        return { audio_features: result.data, song };
       } catch (e) {
         throw e;
       }
@@ -206,6 +231,34 @@ const spotifyStore = defineStore("spotifyStore", {
         let albumAudioFeatures = await this.getAlbumAudioFeatures(albumId);
 
         return { albumAudioFeatures, albumSentimentAnalysis };
+      } catch (e) {
+        throw e;
+      }
+    },
+    async searchForSong(q) {
+      // Return a list of options for the user to choose, then get the artistId when they clicks on it
+      //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
+      try {
+        let res = await axios.get(
+          `https://api.spotify.com/v1/search?type=track&q=${q}`,
+          this.optionsObject
+        );
+        let result = res.data.tracks.items;
+        let tracks = result.map((track) => {
+          return {
+            songUri: track.uri,
+            track_name: track.name,
+            track_id: track.id,
+            duration: track.duration_ms,
+            artist_name: track.artists[0].name,
+            artist_id: track.artists[0].id,
+            album_name: track.album.name,
+            album_image: track.album.images[0].url,
+            album_id: track.album.id,
+          };
+        });
+
+        return tracks;
       } catch (e) {
         throw e;
       }

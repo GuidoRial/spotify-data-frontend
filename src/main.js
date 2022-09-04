@@ -7,8 +7,9 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faSpotify);
+library.add(faSpotify, faMagnifyingGlass);
 const pinia = createPinia();
 createApp(App)
   .use(pinia)
