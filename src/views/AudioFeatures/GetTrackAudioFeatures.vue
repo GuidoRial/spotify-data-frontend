@@ -47,7 +47,7 @@
       <input
         type="text"
         class="search-bar"
-        placeholder="Songs..."
+        placeholder="Song..."
         v-model="searchBar"
       />
       <button class="search-button" @click="searchSong(this.searchBar)">
@@ -60,6 +60,7 @@
     <div
       class="search-result-section"
       v-else-if="searchResults?.length && currentStep === 1"
+      :key="i"
     >
       <div class="search-results" v-for="(result, i) in searchResults">
         <div class="individual-result" @click="selectSong(result.track_id)">
@@ -114,7 +115,7 @@ export default {
     ...mapActions(spotifyStore, ["searchForSong", "getTrackAudioFeatures"]),
     async searchSong(searchBar) {
       try {
-        if (this.searchResults) this.searchResults = [];
+        if (this.searchResults.length) this.searchResults = [];
         if (!searchBar) return;
         let tracksOptions = await this.searchForSong(searchBar);
         this.searchResults = tracksOptions;
@@ -131,9 +132,9 @@ export default {
     openSongOnSpotify(url) {
       window.open(url, "_blank").focus();
     },
-    selectSong(id) {
+    async selectSong(id) {
       this.songId = id;
-      this.getSongAudioFeatures(id);
+      await this.getSongAudioFeatures(id);
       this.currentStep = 2;
     },
     async getSongAudioFeatures(id) {

@@ -73,8 +73,21 @@ const spotifyStore = defineStore("spotifyStore", {
           `https://api.spotify.com/v1/search?type=album&q=${q}`,
           this.optionsObject
         );
-        let albumsOptions = res.data.albums.items;
-        return albumsOptions;
+        let result = res.data.albums.items;
+
+        let albumOptions = result.map((album) => {
+          return {
+            artist_name: album.artists[0].name,
+            album_id: album.id,
+            album_image: album.images[0].url,
+            album_name: album.name,
+            album_uri: album.uri,
+            release_date: album.release_date,
+            release_date_precision: album.release_date_precision,
+          };
+        });
+        localStorage.setItem("album-options", JSON.stringify(albumOptions));
+        return albumOptions;
       } catch (e) {
         throw e;
       }
@@ -125,13 +138,10 @@ const spotifyStore = defineStore("spotifyStore", {
           }
           // Given that we'll display albumAudioFeatures as a graph, we need a way to get
           // The artists, name, and song links
-          albumAudioFeatures[i].artists = songsArray[i].artists;
-          albumAudioFeatures[i].external_urls = songsArray[i].external_urls;
-          albumAudioFeatures[i].name = songsArray[i].name;
-          albumAudioFeatures[i].uri = songsArray[i].uri;
-
-          // Add every usefull information to the averageAudioFeatures object
-          // After the end of the loop we'll get the average
+          albumAudioFeatures[i].artist_name = songsArray[i].artists[0].name;
+          albumAudioFeatures[i].song_name = songsArray[i].name;
+          albumAudioFeatures[i].song_uri = songsArray[i].uri;
+          albumAudioFeatures[i].song_id = songsArray[i].id;
 
           averageAudioFeatures.acousticness +=
             albumAudioFeatures[i].acousticness;

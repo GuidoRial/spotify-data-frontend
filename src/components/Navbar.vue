@@ -5,7 +5,7 @@
       <p class="navbar-section" @click="redirectToDashboard">Dashboard</p>
       <p class="navbar-section">About us</p>
       <button class="logout-spotify-button" @click="logoutFromApp">
-        <font-awesome-icon icon="fa-brands fa-spotify" />Log out
+        <font-awesome-icon icon="fa-solid fa-right-from-bracket" />Log out
       </button>
     </div>
   </nav>
