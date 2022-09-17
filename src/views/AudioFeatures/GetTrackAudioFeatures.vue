@@ -9,9 +9,9 @@
       <input type="text" class="search-bar" placeholder="Song..." v-model="searchBar" />
       <button class="search-button" @click="searchSong(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
     </div>
-    <div class="how-to-use" v-if="!searchResults?.length && currentStep === 1">
-      <p class="explanation">Write the name of a song, then click on it...</p>
-    </div>
+
+    <Explanation text="Write the name of a song, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1" :key="i">
       <div class="search-results" v-for="(result, i) in searchResults">
         <div class="individual-result" @click="selectSong(result.track_id)">
@@ -45,11 +45,13 @@ import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
+import Explanation from "@/components/Explanation.vue";
 export default {
   name: "get-track-audio-features",
   components: {
     Navbar,
     IndividualStep,
+    Explanation,
   },
   data() {
     return {

@@ -9,9 +9,9 @@
       <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
       <button class="search-button" @click="searchAlbum(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
     </div>
-    <div class="how-to-use" v-if="!searchResults?.length && currentStep === 1">
-      <p class="explanation">Write the name of an album, then click on it...</p>
-    </div>
+
+    <Explanation text="Write the name of an album, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
         <div class="individual-result" @click="selectAlbum(result.album_id)">
@@ -45,11 +45,14 @@ import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
+import Explanation from "@/components/Explanation.vue";
+
 export default {
   name: "get-album-audio-features",
   components: {
     Navbar,
     IndividualStep,
+    Explanation,
   },
   data() {
     return {
@@ -132,13 +135,7 @@ export default {
   font-weight: 700;
   border-radius: 10px;
 }
-.how-to-use {
-  padding: 1rem;
-}
-.explanation {
-  font-size: 1.5rem;
-  color: var(--white);
-}
+
 #openWithSpotify {
   z-index: 10;
   color: var(--spotify-green);
