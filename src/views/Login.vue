@@ -15,16 +15,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapState } from "pinia";
 import authStore from "../store/auth";
 import LoginButton from "@/components/LoginButton.vue";
 
 export default {
   name: "Login",
-  computed: {
-    ...mapState(authStore, ["isLoggedIn"]),
-  },
-
   components: { LoginButton },
 };
 </script>

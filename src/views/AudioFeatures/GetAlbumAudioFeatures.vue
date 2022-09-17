@@ -2,18 +2,8 @@
   <Navbar />
   <div class="get-album-audio-features">
     <div class="steps">
-      <div class="individual-step">
-        <div :class="currentStep === 1 ? 'step-number-container-selected' : 'step-number-container-not-selected'">
-          <p :class="currentStep === 1 ? 'step-number-selected' : 'step-number-not-selected'">1</p>
-        </div>
-        <div class="step-name">Look for an album</div>
-      </div>
-      <div class="individual-step">
-        <div :class="currentStep === 2 ? 'step-number-container-selected' : 'step-number-container-not-selected'">
-          <p :class="currentStep === 2 ? 'step-number-selected' : 'step-number-not-selected'">2</p>
-        </div>
-        <div class="step-name">Understand the result</div>
-      </div>
+      <IndividualStep :stepNumber="1" stepName="Look for an album" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
@@ -54,10 +44,12 @@
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
+import IndividualStep from "@/components/IndividualStep.vue";
 export default {
   name: "get-album-audio-features",
   components: {
     Navbar,
+    IndividualStep,
   },
   data() {
     return {
