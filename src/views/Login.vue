@@ -5,13 +5,9 @@
         <p class="login-title text-center">Welcome to Spotify Data Analysis</p>
       </div>
       <div class="login-third-party-login">
-        <p class="login-button-info-text login-info-text text-center">
-          Log in using your Spotify account
-        </p>
+        <p class="login-button-info-text login-info-text text-center">Log in using your Spotify account</p>
         <div class="login-button-container">
-          <button class="login-spotify-button" @click="sendRequestToSpotify">
-            <font-awesome-icon icon="fa-brands fa-spotify" />Login with Spotify
-          </button>
+          <LoginButton />
         </div>
       </div>
     </div>
@@ -21,41 +17,15 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import authStore from "../store/auth";
+import LoginButton from "@/components/LoginButton.vue";
 
 export default {
   name: "Login",
-  data() {
-    return {
-      AUTH_URL:
-        "https://accounts.spotify.com/authorize?client_id=765707358be3421695e00c9aebb02c4c&response_type=code&redirect_uri=http://localhost:8080/login&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state",
-      code: window.location.search.substring(6),
-    };
-  },
   computed: {
     ...mapState(authStore, ["isLoggedIn"]),
   },
-  methods: {
-    ...mapActions(authStore, ["login"]),
-    async sendRequestToSpotify() {
-      try {
-        window.location.replace(this.AUTH_URL);
-      } catch (e) {
-        throw e;
-      }
-    },
-  },
-  mounted() {
-    if (localStorage.getItem("access-token")) {
-      console.log("Already logged in");
-      this.$router.push("dashboard");
-      return;
-    }
-    if (this.code) {
-      localStorage.setItem("code", JSON.stringify(this.code));
-      this.login(this.code);
-      this.$router.push("dashboard");
-    }
-  },
+
+  components: { LoginButton },
 };
 </script>
 
@@ -68,24 +38,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.login-spotify-button {
-  border: none;
-  width: 12rem;
-  height: 3rem;
-  background-color: var(--spotify-green);
-  color: var(--white);
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: 7px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-}
-.login-spotify-button:hover {
-  opacity: 0.9;
-}
+
 .login-gap-width {
   gap: 1rem;
   width: 65%;
@@ -145,8 +98,7 @@ export default {
 }
 
 .header-sprite {
-  background: url(https://cdn.myntassets.com/myx/images/header@2x-new16.a409d46af2e211afcaa82c1359787a90408024be.png)
-    no-repeat 0 0;
+  background: url(https://cdn.myntassets.com/myx/images/header@2x-new16.a409d46af2e211afcaa82c1359787a90408024be.png) no-repeat 0 0;
   background-size: 336px 48px;
 }
 

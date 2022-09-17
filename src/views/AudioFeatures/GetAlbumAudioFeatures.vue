@@ -3,64 +3,26 @@
   <div class="get-album-audio-features">
     <div class="steps">
       <div class="individual-step">
-        <div
-          :class="
-            currentStep === 1
-              ? 'step-number-container-selected'
-              : 'step-number-container-not-selected'
-          "
-        >
-          <p
-            :class="
-              currentStep === 1
-                ? 'step-number-selected'
-                : 'step-number-not-selected'
-            "
-          >
-            1
-          </p>
+        <div :class="currentStep === 1 ? 'step-number-container-selected' : 'step-number-container-not-selected'">
+          <p :class="currentStep === 1 ? 'step-number-selected' : 'step-number-not-selected'">1</p>
         </div>
         <div class="step-name">Look for an album</div>
       </div>
       <div class="individual-step">
-        <div
-          :class="
-            currentStep === 2
-              ? 'step-number-container-selected'
-              : 'step-number-container-not-selected'
-          "
-        >
-          <p
-            :class="
-              currentStep === 2
-                ? 'step-number-selected'
-                : 'step-number-not-selected'
-            "
-          >
-            2
-          </p>
+        <div :class="currentStep === 2 ? 'step-number-container-selected' : 'step-number-container-not-selected'">
+          <p :class="currentStep === 2 ? 'step-number-selected' : 'step-number-not-selected'">2</p>
         </div>
         <div class="step-name">Understand the result</div>
       </div>
     </div>
     <div class="search-section" v-if="currentStep === 1">
-      <input
-        type="text"
-        class="search-bar"
-        placeholder="Album..."
-        v-model="searchBar"
-      />
-      <button class="search-button" @click="searchAlbum(this.searchBar)">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search
-      </button>
+      <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
+      <button class="search-button" @click="searchAlbum(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
     </div>
     <div class="how-to-use" v-if="!searchResults?.length && currentStep === 1">
       <p class="explanation">Write the name of an album, then click on it...</p>
     </div>
-    <div
-      class="search-result-section"
-      v-else-if="searchResults?.length && currentStep === 1"
-    >
+    <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
         <div class="individual-result" @click="selectAlbum(result.album_id)">
           <img :src="result.album_image" class="album-image" />
@@ -72,14 +34,8 @@
                 {{ result.artist_name }}
               </p>
             </div>
-            <div
-              class="open-album-link"
-              @click="openAlbumWithSpotify(result.album_uri)"
-            >
-              <font-awesome-icon
-                icon="fa-brands fa-spotify"
-                id="openWithSpotify"
-              />
+            <div class="open-album-link" @click="openAlbumWithSpotify(result.album_uri)">
+              <font-awesome-icon icon="fa-brands fa-spotify" id="openWithSpotify" />
             </div>
           </div>
         </div>
