@@ -4,27 +4,23 @@
     <div class="navbar-sections">
       <p class="navbar-section" @click="redirectToDashboard">Dashboard</p>
       <p class="navbar-section">About us</p>
-      <button class="logout-spotify-button" @click="logoutFromApp">
-        <font-awesome-icon icon="fa-solid fa-right-from-bracket" />Log out
-      </button>
+      <LogoutButton />
     </div>
   </nav>
 </template>
 <script>
 import authStore from "../store/auth";
 import { mapActions } from "pinia";
+import LogoutButton from "./LogoutButton.vue";
 export default {
   name: "navbar",
   methods: {
     ...mapActions(authStore, ["logout"]),
-    logoutFromApp() {
-      this.logout();
-      this.$router.push({ name: "login" });
-    },
     redirectToDashboard() {
       this.$router.push({ name: "dashboard" });
     },
   },
+  components: { LogoutButton },
 };
 </script>
 <style>
@@ -51,26 +47,5 @@ export default {
 .navbar > h2 {
   cursor: pointer;
   color: var(--white);
-}
-.logout-spotify-button {
-  background-color: var(--black);
-  border: 1px solid var(--spotify-green);
-  width: 8rem;
-  height: 3rem;
-  color: var(--spotify-green);
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: 7px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-}
-
-.logout-spotify-button:hover {
-  background-color: var(--spotify-green);
-  color: var(--black);
-  opacity: 0.95;
 }
 </style>

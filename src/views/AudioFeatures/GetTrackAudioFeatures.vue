@@ -2,66 +2,17 @@
   <Navbar />
   <div class="get-track-audio-features">
     <div class="steps">
-      <div class="individual-step">
-        <div
-          :class="
-            currentStep === 1
-              ? 'step-number-container-selected'
-              : 'step-number-container-not-selected'
-          "
-        >
-          <p
-            :class="
-              currentStep === 1
-                ? 'step-number-selected'
-                : 'step-number-not-selected'
-            "
-          >
-            1
-          </p>
-        </div>
-        <div class="step-name">Look for a song</div>
-      </div>
-      <div class="individual-step">
-        <div
-          :class="
-            currentStep === 2
-              ? 'step-number-container-selected'
-              : 'step-number-container-not-selected'
-          "
-        >
-          <p
-            :class="
-              currentStep === 2
-                ? 'step-number-selected'
-                : 'step-number-not-selected'
-            "
-          >
-            2
-          </p>
-        </div>
-        <div class="step-name">Understand the result</div>
-      </div>
+      <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
     </div>
     <div class="search-section" v-if="currentStep === 1">
-      <input
-        type="text"
-        class="search-bar"
-        placeholder="Song..."
-        v-model="searchBar"
-      />
-      <button class="search-button" @click="searchSong(this.searchBar)">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search
-      </button>
+      <input type="text" class="search-bar" placeholder="Song..." v-model="searchBar" />
+      <button class="search-button" @click="searchSong(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
     </div>
     <div class="how-to-use" v-if="!searchResults?.length && currentStep === 1">
       <p class="explanation">Write the name of a song, then click on it...</p>
     </div>
-    <div
-      class="search-result-section"
-      v-else-if="searchResults?.length && currentStep === 1"
-      :key="i"
-    >
+    <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1" :key="i">
       <div class="search-results" v-for="(result, i) in searchResults">
         <div class="individual-result" @click="selectSong(result.track_id)">
           <div class="track-data">
@@ -72,11 +23,7 @@
             </div>
           </div>
           <div class="track-actions">
-            <font-awesome-icon
-              icon="fa-brands fa-spotify"
-              id="openWithSpotify"
-              @click="openSongOnSpotify(result.songUri)"
-            />
+            <font-awesome-icon icon="fa-brands fa-spotify" id="openWithSpotify" @click="openSongOnSpotify(result.songUri)" />
             <p class="track-duration">
               {{ msToMinutesAndSeconds(result.duration) }}
             </p>
@@ -97,10 +44,12 @@
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
+import IndividualStep from "@/components/IndividualStep.vue";
 export default {
   name: "get-track-audio-features",
   components: {
     Navbar,
+    IndividualStep,
   },
   data() {
     return {
@@ -254,43 +203,7 @@ export default {
 .search-bar:active {
   outline: none;
 }
-.step-name {
-  font-weight: 700;
-  color: var(--white);
-}
-.step-number-not-selected {
-  color: var(--white);
-  font-weight: 700;
-}
-.step-number-selected {
-  color: var(--black);
-  font-weight: 700;
-}
-.step-number-container-selected {
-  border: 1px solid var(--black);
-  border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--white);
-}
-.step-number-container-not-selected {
-  border: 1px solid var(--white);
-  border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.individual-step {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 0 1rem;
-}
+
 .get-track-audio-features {
   background-color: var(--black);
   height: 89vh;
