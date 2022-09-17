@@ -22,9 +22,6 @@ export default {
   props: {
     song: Object,
   },
-  data() {
-    return {};
-  },
   methods: {
     ...mapActions(spotifyStore, ["getTrackAudioFeatures"]),
     async selectSong(id) {

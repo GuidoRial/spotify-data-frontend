@@ -14,21 +14,7 @@
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
-        <div class="individual-result" @click="selectAlbum(result.album_id)">
-          <img :src="result.album_image" class="album-image" />
-          <div class="album-data">
-            <div class="data">
-              <p class="album-name">{{ result.album_name }}</p>
-              <p class="album-release-date-artist">
-                {{ new Date(result.release_date).getFullYear() }} 🞄
-                {{ result.artist_name }}
-              </p>
-            </div>
-            <div class="open-album-link" @click="openAlbumWithSpotify(result.album_uri)">
-              <font-awesome-icon icon="fa-brands fa-spotify" id="openWithSpotify" />
-            </div>
-          </div>
-        </div>
+        <CardResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayAlbum" />
       </div>
     </div>
     <div v-else-if="currentStep === 2">
@@ -46,6 +32,7 @@ import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
+import CardResult from "@/components/CardResult.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -53,13 +40,13 @@ export default {
     Navbar,
     IndividualStep,
     Explanation,
+    CardResult,
   },
   data() {
     return {
       currentStep: 1,
       searchBar: null,
       searchResults: [],
-      albumId: null,
       albumData: null,
     };
   },
@@ -76,56 +63,21 @@ export default {
         throw e;
       }
     },
-    openAlbumWithSpotify(url) {
-      window.open(url, "_blank").focus();
-    },
-    async selectAlbum(id) {
-      this.albumId = id;
-      await this.getAlbumData(id);
-      this.currentStep = 2;
-    },
-    async getAlbumData(id) {
-      try {
-        let albumAudioFeatures = await this.getAlbumAudioFeatures(id);
-        this.albumData = albumAudioFeatures;
-        console.log(this.albumData);
-      } catch (e) {
-        throw e;
-      }
+
+    displayAlbum(albumAudioFeatures) {
+      // Receive album audio features through an event
+      console.log(albumAudioFeatures);
     },
     restart() {
       this.currentStep = 1;
       this.searchBar = null;
       this.searchResults = [];
-      this.albumId = null;
       this.albumData = null;
     },
   },
 };
 </script>
 <style scoped>
-.open-album-link {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  z-index: 99;
-}
-.album-data {
-  text-align: left;
-  padding: 0.3rem;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  z-index: 1;
-}
-.album-release-date-artist {
-  text-align: left;
-  color: var(--dark-gray);
-}
-.album-name {
-  font-weight: 700;
-  color: var(--white);
-}
 .restart-button {
   width: 7rem;
   height: 2rem;
@@ -153,26 +105,6 @@ export default {
   z-index: 1;
 }
 
-.individual-result {
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  padding: 1rem;
-  width: 15rem;
-  height: 18rem;
-  z-index: 1;
-}
-.individual-result:hover {
-  background-color: var(--spotify-gray);
-}
-
-.album-image {
-  width: 15rem;
-  height: auto;
-}
 .search-section {
   display: flex;
   align-items: center;
@@ -204,43 +136,7 @@ export default {
 .search-bar:active {
   outline: none;
 }
-.step-name {
-  font-weight: 700;
-  color: var(--white);
-}
-.step-number-not-selected {
-  color: var(--white);
-  font-weight: 700;
-}
-.step-number-selected {
-  color: var(--black);
-  font-weight: 700;
-}
-.step-number-container-selected {
-  border: 1px solid var(--black);
-  border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--white);
-}
-.step-number-container-not-selected {
-  border: 1px solid var(--white);
-  border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.individual-step {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 0 1rem;
-}
+
 .get-album-audio-features {
   background-color: var(--black);
   height: 89vh;
