@@ -1,21 +1,20 @@
 <template>
   <Navbar />
-  <div class="get-track-audio-features">
-
+  <div class="compare-artist-to-related-artists">
     <div class="steps">
-      <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
-      <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="1" stepName="Look for an artist" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="2" stepName="See how they compare to their related artists" :currentStep="currentStep" />
     </div>
     <div class="search-section" v-if="currentStep === 1">
-      <input type="text" class="search-bar" placeholder="Song..." v-model="searchBar" />
-      <SearchButton @click="searchSong(this.searchBar)" />
+      <input type="text" class="search-bar" placeholder="Artist..." v-model="searchBar" />
+      <SearchButton @click="searchArtist(this.searchBar)" />
     </div>
 
-    <Explanation text="Write the name of a song, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+    <Explanation text="Write the name of an artist, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
-      <div class="search-results" v-for="(result, i) in searchResults" :key="i">
-        <SongResult :song="result" @songSelected="displaySong" @goToNextStep="this.currentStep = 2" />
+      <div v-for="(result, i) in searchResults" :key="i">
+        <ArtistResult @goToNextStep="this.currentStep = 2" @artistSelected="displayData" :artist="result" />
       </div>
     </div>
 
@@ -24,68 +23,68 @@
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <RestartButton  @click="restart"/>
+      <RestartButton @click="restart" />
     </div>
   </div>
 </template>
 <script>
-import Navbar from "@/components/Navbar.vue";
-import spotifyStore from "@/store/spotify";
 import { mapActions, mapState } from "pinia";
+import spotifyStore from "@/store/spotify";
+import Navbar from "@/components/Navbar.vue";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
-import SongResult from "@/components/SongResult.vue";
+import ArtistResult from "@/components/ArtistResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
 import RestartButton from "@/components/RestartButton.vue";
+
 export default {
-  name: "get-track-audio-features",
-  components: {
-    Navbar,
-    IndividualStep,
-    Explanation,
-    SongResult,
-    SearchButton,
-    Spinner,
-    RestartButton
-},
+  name: "comparte-artist-to-related-artists",
   data() {
     return {
       currentStep: 1,
       searchBar: null,
       searchResults: [],
-      trackData: null,
     };
   },
   computed: {
     ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
-    ...mapActions(spotifyStore, ["searchForSong", "getTrackAudioFeatures"]),
-    async searchSong(searchBar) {
+    ...mapActions(spotifyStore, ["searchForArtist"]),
+    async searchArtist(searchBar) {
       try {
         if (this.searchResults.length) this.searchResults = [];
         if (!searchBar) return;
-        let tracksOptions = await this.searchForSong(searchBar);
-        this.searchResults = tracksOptions;
+        let artistOptions = await this.searchForArtist(searchBar);
+        this.searchResults = artistOptions;
         this.searchBar = null;
       } catch (e) {
         throw e;
       }
     },
-    displaySong(audioFeatures) {
-      console.log(audioFeatures);
-      // Receives audio features from event, display in graph
+    displayData(data) {
+      console.log("after");
+      console.log(data);
     },
     restart() {
       this.currentStep = 1;
-      this.searchBar = null;
+      this.searchbar = null;
       this.searchResults = [];
-      this.trackData = null;
     },
+  },
+  components: {
+    Navbar,
+    IndividualStep,
+    Explanation,
+    ArtistResult,
+    SearchButton,
+    Spinner,
+    RestartButton,
   },
 };
 </script>
+
 <style scoped>
 .restart-button {
   width: 7rem;
@@ -96,25 +95,22 @@ export default {
   font-weight: 700;
   border-radius: 10px;
 }
-.how-to-use {
-  padding: 1rem;
-}
-.explanation {
-  font-size: 1.5rem;
-  color: var(--white);
-}
-
 .search-result-section {
   height: 70vh;
   overflow: scroll;
   overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1;
 }
-
-.search-results {
+.steps {
   display: flex;
   justify-content: center;
+  height: 3rem;
 }
-
 .search-section {
   display: flex;
   align-items: center;
@@ -122,7 +118,19 @@ export default {
   gap: 5px;
   margin-bottom: 0.5rem;
 }
-
+.search-button {
+  width: 8rem;
+  height: 2.3rem;
+  border-radius: 30px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--black);
+  background-color: var(--white);
+  cursor: pointer;
+}
 .search-bar {
   width: 40rem;
   height: 1rem;
@@ -134,14 +142,8 @@ export default {
 .search-bar:active {
   outline: none;
 }
-
-.get-track-audio-features {
+.compare-artist-to-related-artists {
   background-color: var(--black);
   height: 89vh;
-}
-.steps {
-  display: flex;
-  justify-content: center;
-  height: 3rem;
 }
 </style>

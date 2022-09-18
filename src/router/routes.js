@@ -3,6 +3,8 @@ import Landing from "../views/Landing.vue";
 import Dashboard from "../views/Dashboard.vue";
 import GetTrackAudioFeatures from "../views/AudioFeatures/GetTrackAudioFeatures.vue";
 import GetAlbumAudioFeatures from "../views/AudioFeatures/GetAlbumAudioFeatures.vue";
+import CompareArtistToRelatedArtists from "../views/UnderstandingArtists/CompareArtistToRelatedArtists.vue";
+
 const routes = [
   {
     path: "/",
@@ -28,6 +30,11 @@ const routes = [
     path: "/dashboard/album-audio-features",
     name: "get-album-audio-features",
     component: GetAlbumAudioFeatures,
+  },
+  {
+    path: "/dashboard/compare-artist-to-related-artists",
+    name: "comparte-artist-to-related-artists",
+    component: CompareArtistToRelatedArtists,
   },
 ];
 

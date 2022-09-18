@@ -7,32 +7,36 @@
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
-      <button class="search-button" @click="searchAlbum(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
+      <SearchButton @click="searchAlbum(this.searchBar)" />
     </div>
 
     <Explanation text="Write the name of an album, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
-        <CardResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayAlbum" />
+        <AlbumResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayData" />
       </div>
     </div>
+
+    <Spinner v-else-if="currentStep === 2 && this.loading" />
+
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <div>
-        <button class="restart-button" @click="restart">Restart?</button>
-      </div>
+      <RestartButton  @click="restart"/>
     </div>
   </div>
 </template>
 <script>
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
-import CardResult from "@/components/CardResult.vue";
+import SearchButton from "@/components/SearchButton.vue";
+import AlbumResult from "@/components/AlbumResult.vue";
+import Spinner from "@/components/Spinner.vue";
+import RestartButton from "@/components/RestartButton.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -40,8 +44,11 @@ export default {
     Navbar,
     IndividualStep,
     Explanation,
-    CardResult,
-  },
+    SearchButton,
+    AlbumResult,
+    Spinner,
+    RestartButton
+},
   data() {
     return {
       currentStep: 1,
@@ -49,6 +56,9 @@ export default {
       searchResults: [],
       albumData: null,
     };
+  },
+  computed: {
+    ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
     ...mapActions(spotifyStore, ["searchForAlbum", "getAlbumAudioFeatures"]),
@@ -63,9 +73,7 @@ export default {
         throw e;
       }
     },
-
-    displayAlbum(albumAudioFeatures) {
-      // Receive album audio features through an event
+    displayData(albumAudioFeatures) {
       console.log(albumAudioFeatures);
     },
     restart() {
@@ -78,20 +86,7 @@ export default {
 };
 </script>
 <style scoped>
-.restart-button {
-  width: 7rem;
-  height: 2rem;
-  cursor: pointer;
-  background-color: var(--spotify-green);
-  color: var(--white);
-  font-weight: 700;
-  border-radius: 10px;
-}
 
-#openWithSpotify {
-  z-index: 10;
-  color: var(--spotify-green);
-}
 
 .search-result-section {
   height: 70vh;

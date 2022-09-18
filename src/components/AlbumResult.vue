@@ -25,9 +25,9 @@ export default {
   methods: {
     ...mapActions(spotifyStore, ["getAlbumAudioFeatures"]),
     async selectAlbum(id) {
+      this.$emit("goToNextStep");
       let albumAudioFeatures = await this.getAlbumAudioFeatures(id);
       this.$emit("albumSelected", albumAudioFeatures);
-      this.$emit("goToNextStep");
     },
     openAlbumWithSpotify(url) {
       window.open(url, "_blank").focus();
@@ -60,6 +60,10 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
   z-index: 99;
+}
+#openWithSpotify {
+  z-index: 10;
+  color: var(--spotify-green);
 }
 .album-data {
   text-align: left;
