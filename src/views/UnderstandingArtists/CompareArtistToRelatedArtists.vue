@@ -19,13 +19,11 @@
     </div>
 
     <Spinner v-else-if="currentStep === 2 && this.loading" />
-    
+
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <div>
-        <button class="restart-button" @click="restart">Restart?</button>
-      </div>
+      <RestartButton @click="restart" />
     </div>
   </div>
 </template>
@@ -38,6 +36,7 @@ import Explanation from "@/components/Explanation.vue";
 import ArtistResult from "@/components/ArtistResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
+import RestartButton from "@/components/RestartButton.vue";
 
 export default {
   name: "comparte-artist-to-related-artists",
@@ -68,6 +67,11 @@ export default {
       console.log("after");
       console.log(data);
     },
+    restart() {
+      this.currentStep = 1;
+      this.searchbar = null;
+      this.searchResults = [];
+    },
   },
   components: {
     Navbar,
@@ -76,6 +80,7 @@ export default {
     ArtistResult,
     SearchButton,
     Spinner,
+    RestartButton,
   },
 };
 </script>

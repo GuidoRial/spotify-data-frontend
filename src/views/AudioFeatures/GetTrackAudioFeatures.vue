@@ -24,9 +24,7 @@
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <div>
-        <button class="restart-button" @click="restart">Restart?</button>
-      </div>
+      <RestartButton  @click="restart"/>
     </div>
   </div>
 </template>
@@ -39,6 +37,7 @@ import Explanation from "@/components/Explanation.vue";
 import SongResult from "@/components/SongResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
+import RestartButton from "@/components/RestartButton.vue";
 export default {
   name: "get-track-audio-features",
   components: {
@@ -47,7 +46,8 @@ export default {
     Explanation,
     SongResult,
     SearchButton,
-    Spinner
+    Spinner,
+    RestartButton
 },
   data() {
     return {

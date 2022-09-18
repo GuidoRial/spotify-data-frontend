@@ -23,9 +23,7 @@
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <div>
-        <button class="restart-button" @click="restart">Restart?</button>
-      </div>
+      <RestartButton  @click="restart"/>
     </div>
   </div>
 </template>
@@ -38,6 +36,7 @@ import Explanation from "@/components/Explanation.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import AlbumResult from "@/components/AlbumResult.vue";
 import Spinner from "@/components/Spinner.vue";
+import RestartButton from "@/components/RestartButton.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -48,7 +47,8 @@ export default {
     SearchButton,
     AlbumResult,
     Spinner,
-  },
+    RestartButton
+},
   data() {
     return {
       currentStep: 1,
@@ -86,15 +86,7 @@ export default {
 };
 </script>
 <style scoped>
-.restart-button {
-  width: 7rem;
-  height: 2rem;
-  cursor: pointer;
-  background-color: var(--spotify-green);
-  color: var(--white);
-  font-weight: 700;
-  border-radius: 10px;
-}
+
 
 .search-result-section {
   height: 70vh;
