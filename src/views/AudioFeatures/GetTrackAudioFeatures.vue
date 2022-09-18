@@ -7,17 +7,14 @@
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Song..." v-model="searchBar" />
-      <button class="search-button" @click="searchSong(this.searchBar)">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-        Search
-      </button>
+      <SearchButton @click="searchSong(this.searchBar)" />
     </div>
 
     <Explanation text="Write the name of a song, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1" :key="i">
       <div class="search-results" v-for="(result, i) in searchResults">
-        <ListResult :song="result" @songSelected="displaySong" @goToNextStep="this.currentStep = 2" />
+        <SongResult :song="result" @songSelected="displaySong" @goToNextStep="this.currentStep = 2" />
       </div>
     </div>
 
@@ -36,14 +33,16 @@ import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
-import ListResult from "@/components/ListResult.vue";
+import SongResult from "@/components/SongResult.vue";
+import SearchButton from "@/components/SearchButton.vue";
 export default {
   name: "get-track-audio-features",
   components: {
     Navbar,
     IndividualStep,
     Explanation,
-    ListResult,
+    SongResult,
+    SearchButton,
   },
   data() {
     return {
@@ -115,19 +114,7 @@ export default {
   gap: 5px;
   margin-bottom: 0.5rem;
 }
-.search-button {
-  width: 8rem;
-  height: 2.3rem;
-  border-radius: 30px;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: var(--black);
-  background-color: var(--white);
-  cursor: pointer;
-}
+
 .search-bar {
   width: 40rem;
   height: 1rem;

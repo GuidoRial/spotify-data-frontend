@@ -12,7 +12,6 @@ const spotifyStore = defineStore("spotifyStore", {
         },
       },
       loading: false,
-      // add at the end
     };
   },
   actions: {
@@ -39,10 +38,11 @@ const spotifyStore = defineStore("spotifyStore", {
     async getTrackAudioFeatures(id) {
       // Get artist and track data into object before sending it
       try {
+        this.loading = true;
         let result = await axios.get(`https://api.spotify.com/v1/audio-features/${id}`, this.optionsObject);
 
         let song = await this.getTrackById(id);
-
+        this.loading = false;
         return { audio_features: result.data, song };
       } catch (e) {
         throw e;
@@ -84,6 +84,7 @@ const spotifyStore = defineStore("spotifyStore", {
     async getAlbumAudioFeatures(albumId) {
       // replace with getTracksAudioFeatures
       try {
+        this.loading = true;
         let res = await this.getAlbumById(albumId);
 
         // Get every song id into this array
@@ -143,7 +144,7 @@ const spotifyStore = defineStore("spotifyStore", {
         for (const key of Object.keys(averageAudioFeatures)) {
           averageAudioFeatures[key] = averageAudioFeatures[key] / albumAudioFeatures.length;
         }
-
+        this.loading = false;
         return { averageAudioFeatures, albumAudioFeatures };
       } catch (e) {
         throw e;
@@ -279,6 +280,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async compareArtistWithItsRelatedArtists(artistId, country) {
       try {
+        this.loading = true;
         // Get primary artist data
         let res = await this.getArtistTopTracks(artistId, country);
         let primaryArtistTopTracks = res.tracks;
@@ -305,7 +307,6 @@ const spotifyStore = defineStore("spotifyStore", {
         for (let track of relatedArtists) {
           relatedArtistsIds.push(track.id);
         }
-        console.log("loading...");
         let relatedArtistsData = {};
 
         for (let i = 0; i < relatedArtistsIds.length; i++) {
@@ -329,7 +330,7 @@ const spotifyStore = defineStore("spotifyStore", {
           };
         }
 
-        console.log("done...");
+        this.loading = false;
 
         return { primaryArtistData, relatedArtistsData };
         // Get related artists data

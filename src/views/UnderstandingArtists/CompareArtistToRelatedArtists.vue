@@ -7,10 +7,7 @@
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Artist..." v-model="searchBar" />
-      <button class="search-button" @click="searchArtist(this.searchBar)">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-        Search
-      </button>
+      <SearchButton @click="searchArtist(this.searchBar)" />
     </div>
 
     <Explanation text="Write the name of an artist, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
@@ -36,6 +33,7 @@ import Navbar from "@/components/Navbar.vue";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
 import ArtistResult from "@/components/ArtistResult.vue";
+import SearchButton from "@/components/SearchButton.vue";
 
 export default {
   name: "comparte-artist-to-related-artists",
@@ -69,6 +67,7 @@ export default {
     IndividualStep,
     Explanation,
     ArtistResult,
+    SearchButton,
   },
 };
 </script>

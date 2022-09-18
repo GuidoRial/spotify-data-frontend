@@ -7,14 +7,14 @@
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
-      <button class="search-button" @click="searchAlbum(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
+      <SearchButton @click="searchAlbum(this.searchBar)" />
     </div>
 
     <Explanation text="Write the name of an album, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
-        <CardResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayData" />
+        <AlbumResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayData" />
       </div>
     </div>
 
@@ -33,7 +33,8 @@ import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
-import CardResult from "@/components/CardResult.vue";
+import SearchButton from "@/components/SearchButton.vue";
+import AlbumResult from "@/components/AlbumResult.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -41,7 +42,8 @@ export default {
     Navbar,
     IndividualStep,
     Explanation,
-    CardResult,
+    SearchButton,
+    AlbumResult,
   },
   data() {
     return {
