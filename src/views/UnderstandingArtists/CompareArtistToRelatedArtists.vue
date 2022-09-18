@@ -17,6 +17,9 @@
         <ArtistResult @goToNextStep="this.currentStep = 2" @artistSelected="displayData" :artist="result" />
       </div>
     </div>
+
+    <Spinner v-else-if="currentStep === 2 && this.loading" />
+    
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
@@ -27,13 +30,14 @@
   </div>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import spotifyStore from "@/store/spotify";
 import Navbar from "@/components/Navbar.vue";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
 import ArtistResult from "@/components/ArtistResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
+import Spinner from "@/components/Spinner.vue";
 
 export default {
   name: "comparte-artist-to-related-artists",
@@ -43,6 +47,9 @@ export default {
       searchBar: null,
       searchResults: [],
     };
+  },
+  computed: {
+    ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
     ...mapActions(spotifyStore, ["searchForArtist"]),
@@ -68,6 +75,7 @@ export default {
     Explanation,
     ArtistResult,
     SearchButton,
+    Spinner,
   },
 };
 </script>

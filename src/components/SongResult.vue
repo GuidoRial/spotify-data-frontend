@@ -25,9 +25,9 @@ export default {
   methods: {
     ...mapActions(spotifyStore, ["getTrackAudioFeatures"]),
     async selectSong(id) {
+      this.$emit("goToNextStep");
       let trackAudioFeatures = await this.getTrackAudioFeatures(id);
       this.$emit("songSelected", trackAudioFeatures);
-      this.$emit("goToNextStep");
     },
     openSongOnSpotify(url) {
       window.open(url, "_blank").focus();

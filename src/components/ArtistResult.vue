@@ -22,9 +22,9 @@ export default {
       window.open(url, "_blank").focus();
     },
     async selectArtist(id) {
+      this.$emit("goToNextStep");
       let data = await this.compareArtistWithItsRelatedArtists(id, "US");
       this.$emit("artistSelected", data);
-      this.$emit("goToNextStep");
     },
   },
 };

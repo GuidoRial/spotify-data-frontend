@@ -18,6 +18,8 @@
       </div>
     </div>
 
+    <Spinner v-else-if="currentStep === 2 && this.loading" />
+
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
@@ -30,11 +32,12 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import AlbumResult from "@/components/AlbumResult.vue";
+import Spinner from "@/components/Spinner.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -44,6 +47,7 @@ export default {
     Explanation,
     SearchButton,
     AlbumResult,
+    Spinner,
   },
   data() {
     return {
@@ -52,6 +56,9 @@ export default {
       searchResults: [],
       albumData: null,
     };
+  },
+  computed: {
+    ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
     ...mapActions(spotifyStore, ["searchForAlbum", "getAlbumAudioFeatures"]),

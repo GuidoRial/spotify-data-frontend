@@ -25,9 +25,9 @@ export default {
   methods: {
     ...mapActions(spotifyStore, ["getAlbumAudioFeatures"]),
     async selectAlbum(id) {
+      this.$emit("goToNextStep");
       let albumAudioFeatures = await this.getAlbumAudioFeatures(id);
       this.$emit("albumSelected", albumAudioFeatures);
-      this.$emit("goToNextStep");
     },
     openAlbumWithSpotify(url) {
       window.open(url, "_blank").focus();

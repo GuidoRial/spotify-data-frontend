@@ -1,6 +1,7 @@
 <template>
   <Navbar />
   <div class="get-track-audio-features">
+
     <div class="steps">
       <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
       <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
@@ -12,11 +13,13 @@
 
     <Explanation text="Write the name of a song, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
-    <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1" :key="i">
-      <div class="search-results" v-for="(result, i) in searchResults">
+    <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
+      <div class="search-results" v-for="(result, i) in searchResults" :key="i">
         <SongResult :song="result" @songSelected="displaySong" @goToNextStep="this.currentStep = 2" />
       </div>
     </div>
+
+    <Spinner v-else-if="currentStep === 2 && this.loading" />
 
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
@@ -30,11 +33,12 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
 import SongResult from "@/components/SongResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
+import Spinner from "@/components/Spinner.vue";
 export default {
   name: "get-track-audio-features",
   components: {
@@ -43,7 +47,8 @@ export default {
     Explanation,
     SongResult,
     SearchButton,
-  },
+    Spinner
+},
   data() {
     return {
       currentStep: 1,
@@ -51,6 +56,9 @@ export default {
       searchResults: [],
       trackData: null,
     };
+  },
+  computed: {
+    ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
     ...mapActions(spotifyStore, ["searchForSong", "getTrackAudioFeatures"]),
