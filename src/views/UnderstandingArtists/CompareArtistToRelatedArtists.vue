@@ -1,23 +1,25 @@
 <template>
   <Navbar />
-  <div class="get-album-audio-features">
+  <div class="compare-artist-to-related-artists">
     <div class="steps">
-      <IndividualStep :stepNumber="1" stepName="Look for an album" :currentStep="currentStep" />
-      <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="1" stepName="Look for an artist" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="2" stepName="See how they compare to their related artists" :currentStep="currentStep" />
     </div>
     <div class="search-section" v-if="currentStep === 1">
-      <input type="text" class="search-bar" placeholder="Album..." v-model="searchBar" />
-      <button class="search-button" @click="searchAlbum(this.searchBar)"><font-awesome-icon icon="fa-solid fa-magnifying-glass" />Search</button>
+      <input type="text" class="search-bar" placeholder="Artist..." v-model="searchBar" />
+      <button class="search-button" @click="searchArtist(this.searchBar)">
+        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+        Search
+      </button>
     </div>
 
-    <Explanation text="Write the name of an album, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+    <Explanation text="Write the name of an artist, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
-        <CardResult :album="result" @goToNextStep="this.currentStep = 2" @albumSelected="displayData" />
+        <ArtistResult @goToNextStep="this.currentStep = 2" @artistSelected="displayData" :artist="result" />
       </div>
     </div>
-
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
@@ -28,54 +30,49 @@
   </div>
 </template>
 <script>
-import Navbar from "@/components/Navbar.vue";
-import spotifyStore from "@/store/spotify";
 import { mapActions } from "pinia";
+import spotifyStore from "@/store/spotify";
+import Navbar from "@/components/Navbar.vue";
 import IndividualStep from "@/components/IndividualStep.vue";
 import Explanation from "@/components/Explanation.vue";
-import CardResult from "@/components/CardResult.vue";
+import ArtistResult from "@/components/ArtistResult.vue";
 
 export default {
-  name: "get-album-audio-features",
-  components: {
-    Navbar,
-    IndividualStep,
-    Explanation,
-    CardResult,
-  },
+  name: "comparte-artist-to-related-artists",
   data() {
     return {
       currentStep: 1,
       searchBar: null,
       searchResults: [],
-      albumData: null,
     };
   },
   methods: {
-    ...mapActions(spotifyStore, ["searchForAlbum", "getAlbumAudioFeatures"]),
-    async searchAlbum(searchBar) {
+    ...mapActions(spotifyStore, ["searchForArtist"]),
+    async searchArtist(searchBar) {
       try {
         if (this.searchResults.length) this.searchResults = [];
         if (!searchBar) return;
-        let albumOptions = await this.searchForAlbum(searchBar);
-        this.searchResults = albumOptions;
+        let artistOptions = await this.searchForArtist(searchBar);
+        this.searchResults = artistOptions;
         this.searchBar = null;
       } catch (e) {
         throw e;
       }
     },
-    displayData(albumAudioFeatures) {
-      console.log(albumAudioFeatures);
+    displayData(data) {
+      console.log("after");
+      console.log(data);
     },
-    restart() {
-      this.currentStep = 1;
-      this.searchBar = null;
-      this.searchResults = [];
-      this.albumData = null;
-    },
+  },
+  components: {
+    Navbar,
+    IndividualStep,
+    Explanation,
+    ArtistResult,
   },
 };
 </script>
+
 <style scoped>
 .restart-button {
   width: 7rem;
@@ -86,7 +83,6 @@ export default {
   font-weight: 700;
   border-radius: 10px;
 }
-
 .search-result-section {
   height: 70vh;
   overflow: scroll;
@@ -98,7 +94,11 @@ export default {
   gap: 0.5rem;
   z-index: 1;
 }
-
+.steps {
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+}
 .search-section {
   display: flex;
   align-items: center;
@@ -130,14 +130,8 @@ export default {
 .search-bar:active {
   outline: none;
 }
-
-.get-album-audio-features {
+.compare-artist-to-related-artists {
   background-color: var(--black);
   height: 89vh;
-}
-.steps {
-  display: flex;
-  justify-content: center;
-  height: 3rem;
 }
 </style>

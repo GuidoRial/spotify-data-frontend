@@ -18,10 +18,7 @@ const spotifyStore = defineStore("spotifyStore", {
   actions: {
     async getTrackById(id) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/tracks/${id}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, this.optionsObject);
         let response = res.data;
         let song = {
           songUri: response.uri,
@@ -42,10 +39,7 @@ const spotifyStore = defineStore("spotifyStore", {
     async getTrackAudioFeatures(id) {
       // Get artist and track data into object before sending it
       try {
-        let result = await axios.get(
-          `https://api.spotify.com/v1/audio-features/${id}`,
-          this.optionsObject
-        );
+        let result = await axios.get(`https://api.spotify.com/v1/audio-features/${id}`, this.optionsObject);
 
         let song = await this.getTrackById(id);
 
@@ -56,10 +50,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getTracksAudioFeatures(songsIds) {
       try {
-        let result = await axios.get(
-          `https://api.spotify.com/v1/audio-features?ids=${songsIds}`,
-          this.optionsObject
-        );
+        let result = await axios.get(`https://api.spotify.com/v1/audio-features?ids=${songsIds}`, this.optionsObject);
         return result.data;
       } catch (e) {
         throw e;
@@ -69,13 +60,10 @@ const spotifyStore = defineStore("spotifyStore", {
     async searchForAlbum(q) {
       // Return a list of options for the user to choose, then get the albumId when they clicks on it
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/search?type=album&q=${q}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/search?type=album&q=${q}`, this.optionsObject);
         let result = res.data.albums.items;
 
-        let albumOptions = result.map((album) => {
+        let albumOptions = result.map(album => {
           return {
             artist_name: album.artists[0].name,
             album_id: album.id,
@@ -109,9 +97,7 @@ const spotifyStore = defineStore("spotifyStore", {
         // Convert that array into a set of string like "id,id,id" instead of ["id", "id", "id"]
         // Use that string to get all the audio features
 
-        let response = await this.getTracksAudioFeatures(
-          songsIdArray.join(",")
-        );
+        let response = await this.getTracksAudioFeatures(songsIdArray.join(","));
 
         let albumAudioFeatures = response.audio_features;
 
@@ -143,13 +129,10 @@ const spotifyStore = defineStore("spotifyStore", {
           albumAudioFeatures[i].song_uri = songsArray[i].uri;
           albumAudioFeatures[i].song_id = songsArray[i].id;
 
-          averageAudioFeatures.acousticness +=
-            albumAudioFeatures[i].acousticness;
-          averageAudioFeatures.danceability +=
-            albumAudioFeatures[i].danceability;
+          averageAudioFeatures.acousticness += albumAudioFeatures[i].acousticness;
+          averageAudioFeatures.danceability += albumAudioFeatures[i].danceability;
           averageAudioFeatures.energy += albumAudioFeatures[i].energy;
-          averageAudioFeatures.instrumentalness +=
-            albumAudioFeatures[i].instrumentalness;
+          averageAudioFeatures.instrumentalness += albumAudioFeatures[i].instrumentalness;
           averageAudioFeatures.liveness += albumAudioFeatures[i].liveness;
           averageAudioFeatures.loudness += albumAudioFeatures[i].loudness;
           averageAudioFeatures.speechiness += albumAudioFeatures[i].speechiness;
@@ -158,8 +141,7 @@ const spotifyStore = defineStore("spotifyStore", {
         }
 
         for (const key of Object.keys(averageAudioFeatures)) {
-          averageAudioFeatures[key] =
-            averageAudioFeatures[key] / albumAudioFeatures.length;
+          averageAudioFeatures[key] = averageAudioFeatures[key] / albumAudioFeatures.length;
         }
 
         return { averageAudioFeatures, albumAudioFeatures };
@@ -169,10 +151,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getSongSentimentAnalysis(song, language) {
       try {
-        let response = await sentimentAnalysis.getSentimentAnalysis(
-          song,
-          language
-        );
+        let response = await sentimentAnalysis.getSentimentAnalysis(song, language);
 
         return response;
       } catch (e) {
@@ -181,10 +160,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getAlbumById(albumId) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/albums/${albumId}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -204,10 +180,7 @@ const spotifyStore = defineStore("spotifyStore", {
             track: albumTracks[i].name,
           };
 
-          let response = await sentimentAnalysis.getSentimentAnalysis(
-            song,
-            language
-          );
+          let response = await sentimentAnalysis.getSentimentAnalysis(song, language);
 
           sentimentAnalysisData.push({ response, song });
         }
@@ -218,8 +191,7 @@ const spotifyStore = defineStore("spotifyStore", {
           albumSentimentAverage += song.response.songSentimentAnalysis;
         }
 
-        albumSentimentAverage =
-          albumSentimentAverage / sentimentAnalysisData.length;
+        albumSentimentAverage = albumSentimentAverage / sentimentAnalysisData.length;
 
         return {
           artist: album.artists[0].name,
@@ -233,10 +205,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getAlbumSentimentAnalysisAndAudioFeatures(albumId, language) {
       try {
-        let albumSentimentAnalysis = await this.getAlbumSentimentAnalysis(
-          albumId,
-          language
-        );
+        let albumSentimentAnalysis = await this.getAlbumSentimentAnalysis(albumId, language);
 
         let albumAudioFeatures = await this.getAlbumAudioFeatures(albumId);
 
@@ -249,12 +218,9 @@ const spotifyStore = defineStore("spotifyStore", {
       // Return a list of options for the user to choose, then get the artistId when they clicks on it
       //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/search?type=track&q=${q}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/search?type=track&q=${q}`, this.optionsObject);
         let result = res.data.tracks.items;
-        let tracks = result.map((track) => {
+        let tracks = result.map(track => {
           return {
             songUri: track.uri,
             track_name: track.name,
@@ -277,12 +243,16 @@ const spotifyStore = defineStore("spotifyStore", {
       // Return a list of options for the user to choose, then get the artistId when they clicks on it
       //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/search?type=artist&q=${q}`,
-          this.optionsObject
-        );
-        let artistOptions = res.data.artists.items;
-
+        let res = await axios.get(`https://api.spotify.com/v1/search?type=artist&q=${q}`, this.optionsObject);
+        let data = res.data.artists.items;
+        let artistOptions = data.map(artist => {
+          return {
+            artist_name: artist.name,
+            artist_image: artist.images[0]?.url,
+            artist_uri: artist.uri,
+            artist_id: artist.id,
+          };
+        });
         return artistOptions;
       } catch (e) {
         throw e;
@@ -290,10 +260,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getArtistRelatedArtist(artistId) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/artists/${artistId}/related-artists`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/related-artists`, this.optionsObject);
         let relatedArtists = res.data.artists;
         return relatedArtists;
       } catch (e) {
@@ -302,10 +269,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getArtistTopTracks(artistId, country) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`, this.optionsObject);
 
         let topTracks = res.data;
         return topTracks;
@@ -323,9 +287,7 @@ const spotifyStore = defineStore("spotifyStore", {
         for (let track of primaryArtistTopTracks) {
           primaryArtistTopTracksIds.push(track.id);
         }
-        let result = await this.getTracksAudioFeatures(
-          primaryArtistTopTracksIds.join(",")
-        );
+        let result = await this.getTracksAudioFeatures(primaryArtistTopTracksIds.join(","));
         let primaryArtistAudioFeatures = result.audio_features;
 
         let primaryArtistData = {
@@ -347,10 +309,7 @@ const spotifyStore = defineStore("spotifyStore", {
         let relatedArtistsData = {};
 
         for (let i = 0; i < relatedArtistsIds.length; i++) {
-          let response = await this.getArtistTopTracks(
-            relatedArtistsIds[i],
-            country
-          );
+          let response = await this.getArtistTopTracks(relatedArtistsIds[i], country);
           let artistTopTracks = response.tracks;
           let artistName = artistTopTracks[0].artists[0].name;
 
@@ -380,10 +339,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getCurrentUsersProfile() {
       try {
-        let res = await axios.get(
-          "https://api.spotify.com/v1/me",
-          this.optionsObject
-        );
+        let res = await axios.get("https://api.spotify.com/v1/me", this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -391,10 +347,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getCurrentUsersTopArtists() {
       try {
-        let res = await axios.get(
-          "https://api.spotify.com/v1/me/top/tracks",
-          this.optionsObject
-        );
+        let res = await axios.get("https://api.spotify.com/v1/me/top/tracks", this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -403,10 +356,7 @@ const spotifyStore = defineStore("spotifyStore", {
     async getArtistsAlbums(artistId) {
       // gets a list of albums
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`, this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -415,10 +365,7 @@ const spotifyStore = defineStore("spotifyStore", {
     async getSeveralAlbums(albumsIds) {
       // gets a list of albums
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/albums?ids=${albumsIds}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/albums?ids=${albumsIds}`, this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -426,10 +373,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getSeveraltracks(tracksIds) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/tracks?ids=${tracksIds}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/tracks?ids=${tracksIds}`, this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -482,12 +426,7 @@ const spotifyStore = defineStore("spotifyStore", {
           }
         }
 
-        let tracks = await this.callFunctionPerChunks(
-          50,
-          this.getSeveraltracks,
-          tracksIds,
-          "tracks"
-        );
+        let tracks = await this.callFunctionPerChunks(50, this.getSeveraltracks, tracksIds, "tracks");
         tracks.sort((a, b) => b.popularity - a.popularity);
 
         console.log("tracks regarding popularity");

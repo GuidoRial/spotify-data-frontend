@@ -20,7 +20,7 @@ let appFeatures = [
       {
         title: `Compare artist to their related artists`,
         description: `Find an artist you like, compare their top 10 songs with their related artists' top 10`,
-        route: { name: "get-track-audio-features" },
+        route: { name: "comparte-artist-to-related-artists" },
       },
       {
         title: `Compare artist to other artists you like`,

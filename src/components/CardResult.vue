@@ -61,6 +61,10 @@ export default {
   justify-content: flex-end;
   z-index: 99;
 }
+#openWithSpotify {
+  z-index: 10;
+  color: var(--spotify-green);
+}
 .album-data {
   text-align: left;
   padding: 0.3rem;
