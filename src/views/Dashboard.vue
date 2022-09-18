@@ -6,7 +6,7 @@
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
-import appFeatures from "./AudioFeatures/appFeatures";
+import appFeatures from "./appFeatures";
 import FunctionalitySection from "@/components/FunctionalitySection.vue";
 
 export default {
