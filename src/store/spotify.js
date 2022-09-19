@@ -2,6 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import sentimentAnalysis from "../service/sentimentAnalysis";
 import mostCommonWords from "../service/mostCommonWords";
+import spotify from "@/service/spotify";
 
 const spotifyStore = defineStore("spotifyStore", {
   state: () => {
@@ -15,35 +16,22 @@ const spotifyStore = defineStore("spotifyStore", {
     };
   },
   actions: {
-    async getTrackById(id) {
+    async searchForSong(q) {
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, this.optionsObject);
-        let response = res.data;
-        let song = {
-          songUri: response.uri,
-          track_name: response.name,
-          track_id: response.id,
-          duration: response.duration_ms,
-          artist_name: response.artists[0].name,
-          artist_id: response.artists[0].id,
-          album_name: response.album.name,
-          album_image: response.album.images[0].url,
-          album_id: response.album.id,
-        };
-        return song;
+        const tracks = await spotify.getSongsOptionsByName(q);
+        console.log(tracks);
+        return tracks;
       } catch (e) {
         throw e;
       }
     },
     async getTrackAudioFeatures(id) {
-      // Get artist and track data into object before sending it
       try {
         this.loading = true;
-        let result = await axios.get(`https://api.spotify.com/v1/audio-features/${id}`, this.optionsObject);
-
-        let song = await this.getTrackById(id);
+        const data = await spotify.getTrackAudioFeatures(id, this.optionsObject);
         this.loading = false;
-        return { audio_features: result.data, song };
+        console.log(data);
+        return data;
       } catch (e) {
         throw e;
       }
@@ -215,31 +203,7 @@ const spotifyStore = defineStore("spotifyStore", {
         throw e;
       }
     },
-    async searchForSong(q) {
-      // Return a list of options for the user to choose, then get the artistId when they clicks on it
-      //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
-      try {
-        let res = await axios.get(`https://api.spotify.com/v1/search?type=track&q=${q}`, this.optionsObject);
-        let result = res.data.tracks.items;
-        let tracks = result.map(track => {
-          return {
-            songUri: track.uri,
-            track_name: track.name,
-            track_id: track.id,
-            duration: track.duration_ms,
-            artist_name: track.artists[0].name,
-            artist_id: track.artists[0].id,
-            album_name: track.album.name,
-            album_image: track.album.images[0].url,
-            album_id: track.album.id,
-          };
-        });
 
-        return tracks;
-      } catch (e) {
-        throw e;
-      }
-    },
     async searchForArtist(q) {
       // Return a list of options for the user to choose, then get the artistId when they clicks on it
       //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
