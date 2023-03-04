@@ -20,16 +20,7 @@ export default {
   components: {
     Navbar,
     FunctionalitySection,
-  },
-  async mounted() {
-    setTimeout(() => {
-      if (!localStorage.getItem("access-token")) {
-        console.log("Not logged in");
-        this.$router.push("login");
-        return;
-      }
-    }, 1000);
-  },
+  }
 };
 </script>
 <style>
