@@ -3,7 +3,7 @@
       icon="fa-brands fa-spotify" />Login with Spotify</button>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import authStore from "@/store/auth";
 export default {
   name: "login-button",
@@ -14,27 +14,14 @@ export default {
       code: window.location.search.substring(6),
     };
   },
+  computed: {
+    ...mapState(authStore, ["isLoggedIn"])
+  },
   methods: {
     ...mapActions(authStore, ["login"]),
-    async sendRequestToSpotify() {
-      try {
-        window.location.replace(this.AUTH_URL);
-      } catch (e) {
-        throw e;
-      }
+    sendRequestToSpotify() {
+      window.location.replace(this.AUTH_URL);
     },
-  },
-  mounted() {
-    if (localStorage.getItem("access-token")) {
-      console.log("Already logged in");
-      this.$router.push("dashboard");
-      return;
-    }
-    if (this.code) {
-      localStorage.setItem("code", JSON.stringify(this.code));
-      this.login(this.code);
-      this.$router.push("dashboard");
-    }
   },
 };
 </script>
