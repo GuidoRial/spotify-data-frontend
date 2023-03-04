@@ -7,11 +7,6 @@ import spotify from '@/service/spotify';
 const spotifyStore = defineStore('spotifyStore', {
   state: () => {
     return {
-      optionsObject: {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-        },
-      },
       loading: false,
     };
   },
@@ -28,7 +23,7 @@ const spotifyStore = defineStore('spotifyStore', {
     async getTrackAudioFeatures(id) {
       try {
         this.loading = true;
-        const data = await spotify.getTrackAudioFeatures(id, this.optionsObject);
+        const data = await spotify.getTrackAudioFeatures(id);
         this.loading = false;
         console.log(data);
         return data;
@@ -38,7 +33,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getTracksAudioFeatures(songsIds) {
       try {
-        let result = await axios.get(`https://api.spotify.com/v1/audio-features?ids=${songsIds}`, this.optionsObject);
+        let result = await axios.get(`https://api.spotify.com/v1/audio-features?ids=${songsIds}`);
         return result.data;
       } catch (e) {
         throw e;
@@ -48,7 +43,7 @@ const spotifyStore = defineStore('spotifyStore', {
     async searchForAlbum(q) {
       // Return a list of options for the user to choose, then get the albumId when they clicks on it
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/search?type=album&q=${q}`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/search?type=album&q=${q}`);
         let result = res.data.albums.items;
 
         let albumOptions = result.map((album) => {
@@ -149,7 +144,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getAlbumById(albumId) {
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`);
         return res.data;
       } catch (e) {
         throw e;
@@ -208,7 +203,7 @@ const spotifyStore = defineStore('spotifyStore', {
       // Return a list of options for the user to choose, then get the artistId when they clicks on it
       //"6XyY86QOPPrYVGvF9ch6wz" - Linkin Park
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/search?type=artist&q=${q}`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/search?type=artist&q=${q}`);
         let data = res.data.artists.items;
         let artistOptions = data.map((artist) => {
           return {
@@ -225,7 +220,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getArtistRelatedArtist(artistId) {
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/related-artists`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/related-artists`);
         let relatedArtists = res.data.artists;
         return relatedArtists;
       } catch (e) {
@@ -234,10 +229,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getArtistTopTracks(artistId, country) {
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`);
 
         let topTracks = res.data;
         return topTracks;
@@ -307,7 +299,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getCurrentUsersProfile() {
       try {
-        let res = await axios.get('https://api.spotify.com/v1/me', this.optionsObject);
+        let res = await axios.get('https://api.spotify.com/v1/me');
         return res.data;
       } catch (e) {
         throw e;
@@ -315,7 +307,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getCurrentUsersTopArtists() {
       try {
-        let res = await axios.get('https://api.spotify.com/v1/me/top/tracks', this.optionsObject);
+        let res = await axios.get('https://api.spotify.com/v1/me/top/tracks');
         return res.data;
       } catch (e) {
         throw e;
@@ -324,10 +316,7 @@ const spotifyStore = defineStore('spotifyStore', {
     async getArtistsAlbums(artistId) {
       // gets a list of albums
       try {
-        let res = await axios.get(
-          `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`,
-          this.optionsObject
-        );
+        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`);
         return res.data;
       } catch (e) {
         throw e;
@@ -336,7 +325,7 @@ const spotifyStore = defineStore('spotifyStore', {
     async getSeveralAlbums(albumsIds) {
       // gets a list of albums
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/albums?ids=${albumsIds}`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/albums?ids=${albumsIds}`);
         return res.data;
       } catch (e) {
         throw e;
@@ -344,7 +333,7 @@ const spotifyStore = defineStore('spotifyStore', {
     },
     async getSeveraltracks(tracksIds) {
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/tracks?ids=${tracksIds}`, this.optionsObject);
+        let res = await axios.get(`https://api.spotify.com/v1/tracks?ids=${tracksIds}`);
         return res.data;
       } catch (e) {
         throw e;
