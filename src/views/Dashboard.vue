@@ -1,7 +1,8 @@
 <template>
   <Navbar />
   <div class="individual-functionality-container">
-    <FunctionalitySection v-for="(functionality, i) in features" :key="i" :groupTitle="functionality.groupTitle" :groupSections="functionality.groupSections" />
+    <FunctionalitySection v-for="(functionality, i) in features" :key="i" :groupTitle="functionality.groupTitle"
+      :groupSections="functionality.groupSections" />
   </div>
 </template>
 <script>
@@ -34,7 +35,7 @@ export default {
 <style>
 .individual-functionality-container {
   background-color: var(--black);
-  padding: 1rem;
+  padding: 1rem 5rem;
   height: 86vh;
 }
 </style>

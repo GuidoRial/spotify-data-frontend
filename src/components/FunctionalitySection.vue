@@ -6,8 +6,7 @@
       :key="i"
       :title="functionality.title"
       :description="functionality.description"
-      :route="functionality.route"
-    />
+      :route="functionality.route" />
   </div>
 </template>
 
@@ -24,7 +23,7 @@ export default {
 </script>
 <style scoped>
 .section-title {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   color: var(--spotify-green) !important;
 }
 </style>

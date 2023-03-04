@@ -1,5 +1,6 @@
 <template>
-  <button class="login-spotify-button" @click="sendRequestToSpotify"><font-awesome-icon icon="fa-brands fa-spotify" />Login with Spotify</button>
+  <button class="login-spotify-button" @click="sendRequestToSpotify"><font-awesome-icon
+      icon="fa-brands fa-spotify" />Login with Spotify</button>
 </template>
 <script>
 import { mapActions } from "pinia";
@@ -9,7 +10,7 @@ export default {
   data() {
     return {
       AUTH_URL:
-        "https://accounts.spotify.com/authorize?client_id=765707358be3421695e00c9aebb02c4c&response_type=code&redirect_uri=http://localhost:8080/login&scope=streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state",
+        `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&response_type=code&redirect_uri=${process.env.VUE_APP_REDIRECT_URI}&scope=streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state`,
       code: window.location.search.substring(6),
     };
   },
@@ -54,6 +55,7 @@ export default {
   justify-content: center;
   gap: 0.3rem;
 }
+
 .login-spotify-button:hover {
   opacity: 0.9;
 }
