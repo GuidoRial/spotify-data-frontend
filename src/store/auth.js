@@ -13,7 +13,7 @@ const authStore = defineStore('auth', {
     isLoggedIn: (state) => !!state.accessToken,
   },
   actions: {
-    async login(code) {
+    async login(code, redirect) {
       try {
         const res = await auth.login(code);
         this.accessToken = res.accessToken;
@@ -22,6 +22,7 @@ const authStore = defineStore('auth', {
         localStorage.setItem('code', JSON.stringify(code));
         localStorage.setItem('access-token', this.accessToken);
         localStorage.setItem('refresh-token', this.refreshToken);
+        redirect({ name: 'dashboard' });
       } catch (e) {
         throw e;
       }

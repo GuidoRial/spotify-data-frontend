@@ -23,6 +23,11 @@ export default {
       window.location.replace(this.AUTH_URL);
     },
   },
+  async mounted() {
+    if (this.code) {
+      this.login(this.code, this.$router.push);
+    }
+  }
 };
 </script>
 
