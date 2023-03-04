@@ -29,14 +29,17 @@ export default {
   align-items: center;
   gap: 0.5rem;
 }
+
 .navbar-section {
   cursor: pointer;
   color: var(--white);
   font-size: 1.3rem;
 }
+
 .navbar-section:hover {
   border-bottom: 1px solid var(--white);
 }
+
 .navbar {
   background-color: var(--black);
   display: flex;
@@ -44,8 +47,8 @@ export default {
   align-items: center;
   height: 5vh;
 }
-.navbar > h2 {
+
+.navbar>h2 {
   cursor: pointer;
   color: var(--white);
-}
-</style>
+}</style>

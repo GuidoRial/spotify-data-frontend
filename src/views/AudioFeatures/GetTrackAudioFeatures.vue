@@ -11,7 +11,8 @@
       <SearchButton @click="searchSong(this.searchBar)" />
     </div>
 
-    <Explanation text="Write the name of a song, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+    <Explanation text="Write the name of a song, then click on it..."
+      v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div class="search-results" v-for="(result, i) in searchResults" :key="i">
@@ -24,7 +25,7 @@
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <RestartButton  @click="restart"/>
+      <RestartButton @click="restart" />
     </div>
   </div>
 </template>
@@ -48,7 +49,7 @@ export default {
     SearchButton,
     Spinner,
     RestartButton
-},
+  },
   data() {
     return {
       currentStep: 1,
@@ -96,9 +97,11 @@ export default {
   font-weight: 700;
   border-radius: 10px;
 }
+
 .how-to-use {
   padding: 1rem;
 }
+
 .explanation {
   font-size: 1.5rem;
   color: var(--white);
@@ -130,6 +133,7 @@ export default {
   padding: 0.5rem;
   border: none;
 }
+
 .search-bar:focus,
 .search-bar:active {
   outline: none;
@@ -139,9 +143,9 @@ export default {
   background-color: var(--black);
   height: 89vh;
 }
+
 .steps {
   display: flex;
   justify-content: center;
   height: 3rem;
-}
-</style>
+}</style>

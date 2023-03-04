@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
-import authStore from "../store/auth";
 import LoginButton from "@/components/LoginButton.vue";
 
 export default {

@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import lyrics from "../service/lyrics";
+import { defineStore } from 'pinia';
+import lyrics from '../service/lyrics';
 
-const lyricsStore = defineStore("lyrics", {
+const lyricsStore = defineStore('lyrics', {
   state: () => {
     return {};
   },

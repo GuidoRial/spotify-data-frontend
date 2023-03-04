@@ -48,23 +48,28 @@ export default {
   height: 18rem;
   z-index: 1;
 }
+
 .individual-result:hover {
   background-color: var(--spotify-gray);
 }
+
 .album-image {
   width: 15rem;
   height: auto;
 }
+
 .open-album-link {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   z-index: 99;
 }
+
 #openWithSpotify {
   z-index: 10;
   color: var(--spotify-green);
 }
+
 .album-data {
   text-align: left;
   padding: 0.3rem;
@@ -73,12 +78,13 @@ export default {
   justify-content: space-between;
   z-index: 1;
 }
+
 .album-release-date-artist {
   text-align: left;
   color: var(--dark-gray);
 }
+
 .album-name {
   font-weight: 700;
   color: var(--white);
-}
-</style>
+}</style>

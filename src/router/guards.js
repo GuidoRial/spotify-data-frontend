@@ -1,10 +1,10 @@
-import useAuth from "../store/auth";
+import useAuth from '../store/auth';
 
 export const beforeEnterNotLoggedIn = (to, from) => {
   const authStore = useAuth();
 
   if (!authStore.isLoggedIn) {
-    return { name: "login" };
+    return { name: 'login' };
   }
 };
 
@@ -12,6 +12,6 @@ export const beforeEnterLoggedIn = (to, from) => {
   const authStore = useAuth();
 
   if (authStore.isLoggedIn) {
-    return { name: "dashboard" };
+    return { name: 'dashboard' };
   }
 };

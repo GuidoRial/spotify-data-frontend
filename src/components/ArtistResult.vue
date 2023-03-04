@@ -35,6 +35,7 @@ export default {
   z-index: 10;
   color: var(--spotify-green);
 }
+
 .individual-result {
   border-radius: 5px;
   display: flex;
@@ -47,15 +48,18 @@ export default {
   height: 18rem;
   z-index: 1;
 }
+
 .individual-result:hover {
   background-color: var(--spotify-gray);
 }
+
 .artist-image {
   width: 15rem;
   height: 15rem;
   border-radius: 50%;
   object-fit: contain;
 }
+
 .open-artist-link {
   display: flex;
   flex-direction: column;
@@ -63,6 +67,7 @@ export default {
   align-items: center;
   z-index: 99;
 }
+
 .artist-data {
   text-align: left;
   padding: 0.3rem;
@@ -71,9 +76,9 @@ export default {
   justify-content: space-between;
   z-index: 1;
 }
+
 .artist-name {
   font-weight: 700;
   color: var(--white);
   font-size: 1rem;
-}
-</style>
+}</style>

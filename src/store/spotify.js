@@ -1,15 +1,15 @@
-import axios from "axios";
-import { defineStore } from "pinia";
-import sentimentAnalysis from "../service/sentimentAnalysis";
-import mostCommonWords from "../service/mostCommonWords";
-import spotify from "@/service/spotify";
+import axios from 'axios';
+import { defineStore } from 'pinia';
+import sentimentAnalysis from '../service/sentimentAnalysis';
+import mostCommonWords from '../service/mostCommonWords';
+import spotify from '@/service/spotify';
 
-const spotifyStore = defineStore("spotifyStore", {
+const spotifyStore = defineStore('spotifyStore', {
   state: () => {
     return {
       optionsObject: {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+          Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
       },
       loading: false,
@@ -51,7 +51,7 @@ const spotifyStore = defineStore("spotifyStore", {
         let res = await axios.get(`https://api.spotify.com/v1/search?type=album&q=${q}`, this.optionsObject);
         let result = res.data.albums.items;
 
-        let albumOptions = result.map(album => {
+        let albumOptions = result.map((album) => {
           return {
             artist_name: album.artists[0].name,
             album_id: album.id,
@@ -62,7 +62,7 @@ const spotifyStore = defineStore("spotifyStore", {
             release_date_precision: album.release_date_precision,
           };
         });
-        localStorage.setItem("album-options", JSON.stringify(albumOptions));
+        localStorage.setItem('album-options', JSON.stringify(albumOptions));
         return albumOptions;
       } catch (e) {
         throw e;
@@ -86,7 +86,7 @@ const spotifyStore = defineStore("spotifyStore", {
         // Convert that array into a set of string like "id,id,id" instead of ["id", "id", "id"]
         // Use that string to get all the audio features
 
-        let response = await this.getTracksAudioFeatures(songsIdArray.join(","));
+        let response = await this.getTracksAudioFeatures(songsIdArray.join(','));
 
         let albumAudioFeatures = response.audio_features;
 
@@ -108,8 +108,8 @@ const spotifyStore = defineStore("spotifyStore", {
         for (let i = 0; i < albumAudioFeatures.length; i++) {
           // They seem to mantain their order so let just do this...
           if (albumAudioFeatures[i].id !== songsArray[i].id) {
-            console.log("not the same id!!!");
-            throw new Error("Albums dont mantain id");
+            console.log('not the same id!!!');
+            throw new Error('Albums dont mantain id');
           }
           // Given that we'll display albumAudioFeatures as a graph, we need a way to get
           // The artists, name, and song links
@@ -210,7 +210,7 @@ const spotifyStore = defineStore("spotifyStore", {
       try {
         let res = await axios.get(`https://api.spotify.com/v1/search?type=artist&q=${q}`, this.optionsObject);
         let data = res.data.artists.items;
-        let artistOptions = data.map(artist => {
+        let artistOptions = data.map((artist) => {
           return {
             artist_name: artist.name,
             artist_image: artist.images[0]?.url,
@@ -234,7 +234,10 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getArtistTopTracks(artistId, country) {
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`, this.optionsObject);
+        let res = await axios.get(
+          `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=${country}`,
+          this.optionsObject
+        );
 
         let topTracks = res.data;
         return topTracks;
@@ -253,7 +256,7 @@ const spotifyStore = defineStore("spotifyStore", {
         for (let track of primaryArtistTopTracks) {
           primaryArtistTopTracksIds.push(track.id);
         }
-        let result = await this.getTracksAudioFeatures(primaryArtistTopTracksIds.join(","));
+        let result = await this.getTracksAudioFeatures(primaryArtistTopTracksIds.join(','));
         let primaryArtistAudioFeatures = result.audio_features;
 
         let primaryArtistData = {
@@ -284,7 +287,7 @@ const spotifyStore = defineStore("spotifyStore", {
             tracksIds.push(track.id);
           }
 
-          let res = await this.getTracksAudioFeatures(tracksIds.join(","));
+          let res = await this.getTracksAudioFeatures(tracksIds.join(','));
 
           let artistTopTracksAudioFeatures = res.audio_features;
 
@@ -304,7 +307,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getCurrentUsersProfile() {
       try {
-        let res = await axios.get("https://api.spotify.com/v1/me", this.optionsObject);
+        let res = await axios.get('https://api.spotify.com/v1/me', this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -312,7 +315,7 @@ const spotifyStore = defineStore("spotifyStore", {
     },
     async getCurrentUsersTopArtists() {
       try {
-        let res = await axios.get("https://api.spotify.com/v1/me/top/tracks", this.optionsObject);
+        let res = await axios.get('https://api.spotify.com/v1/me/top/tracks', this.optionsObject);
         return res.data;
       } catch (e) {
         throw e;
@@ -321,7 +324,10 @@ const spotifyStore = defineStore("spotifyStore", {
     async getArtistsAlbums(artistId) {
       // gets a list of albums
       try {
-        let res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`, this.optionsObject);
+        let res = await axios.get(
+          `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album`,
+          this.optionsObject
+        );
         return res.data;
       } catch (e) {
         throw e;
@@ -353,7 +359,7 @@ const spotifyStore = defineStore("spotifyStore", {
       }
 
       for (let i = 0; i < queue.length; i++) {
-        let response = await cb(queue[i].join(","));
+        let response = await cb(queue[i].join(','));
         answer = [...answer, ...response[albumsOrTracks]];
       }
       return answer;
@@ -375,10 +381,10 @@ const spotifyStore = defineStore("spotifyStore", {
             20, //max amount supported
             this.getSeveralAlbums,
             albumsIds,
-            "albums"
+            'albums'
           );
         } else {
-          let data = await this.getSeveralAlbums(albumsIds.join(","));
+          let data = await this.getSeveralAlbums(albumsIds.join(','));
           albums = data.albums;
         }
 
@@ -391,10 +397,10 @@ const spotifyStore = defineStore("spotifyStore", {
           }
         }
 
-        let tracks = await this.callFunctionPerChunks(50, this.getSeveraltracks, tracksIds, "tracks");
+        let tracks = await this.callFunctionPerChunks(50, this.getSeveraltracks, tracksIds, 'tracks');
         tracks.sort((a, b) => b.popularity - a.popularity);
 
-        console.log("tracks regarding popularity");
+        console.log('tracks regarding popularity');
         console.log(tracks);
 
         tracks.splice(40, tracks.length - 50);
@@ -407,7 +413,7 @@ const spotifyStore = defineStore("spotifyStore", {
         //   }
         // }
 
-        console.log("tracks with the most popularity");
+        console.log('tracks with the most popularity');
         console.log(tracks);
 
         // let songsArray = [];
