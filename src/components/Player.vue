@@ -133,7 +133,7 @@ export default {
   justify-content: center;
   position: fixed;
   bottom: 1rem;
-  border-radius: 15px;
+  border-radius: var(--border-medium);
   left: 50%;
   transform: translateX(-50%);
 }
@@ -175,7 +175,7 @@ export default {
 .btn-spotify {
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
+  border-radius: var(--border-round);
   display: flex;
   justify-content: center;
   align-items: center;

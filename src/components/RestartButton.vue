@@ -10,6 +10,6 @@
   background-color: var(--spotify-green);
   color: var(--white);
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: var(--border-small)
 }
 </style>

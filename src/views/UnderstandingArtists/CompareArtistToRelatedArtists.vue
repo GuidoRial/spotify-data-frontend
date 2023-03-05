@@ -95,7 +95,7 @@ export default {
   background-color: var(--spotify-green);
   color: var(--white);
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: var(--border-medium);
 }
 
 .search-result-section {
@@ -127,7 +127,7 @@ export default {
 .search-button {
   width: 8rem;
   height: 2.3rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -141,7 +141,7 @@ export default {
 .search-bar {
   width: 40rem;
   height: 1rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   border: none;
 }
@@ -154,4 +154,5 @@ export default {
 .compare-artist-to-related-artists {
   background-color: var(--black);
   height: 89vh;
-}</style>
+}
+</style>

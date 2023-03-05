@@ -127,7 +127,7 @@ export default {
   background-color: var(--spotify-green);
   color: var(--white);
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: var(--border-medium);
 }
 
 .how-to-use {
@@ -161,7 +161,7 @@ export default {
 .search-bar {
   width: 40rem;
   height: 1rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   border: none;
 }
