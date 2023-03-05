@@ -5,7 +5,7 @@
 <style scoped>
 .restart-button {
   width: 7rem;
-  height: 2rem;
+  height: 4rem;
   cursor: pointer;
   background-color: var(--spotify-green);
   color: var(--white);

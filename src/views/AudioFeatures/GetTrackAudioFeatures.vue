@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div :style="currentStep === 2 ? { height: '111vh' } : { height: '90vh' }" class="get-track-audio-features">
+  <div :style="currentStep === 2 ? { height: '118vh' } : { height: '90vh' }" class="get-track-audio-features">
 
     <div class="steps">
       <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
@@ -66,7 +66,7 @@ export default {
       searchBar: null,
       searchResults: [],
       trackData: null,
-      categories: ['acousticness', 'danceability', 'energy', 'valence'],
+      categories: ['acousticness', 'danceability', 'energy', 'valence', 'mode'],
       series: [],
       showGraph: false,
       player: undefined,
@@ -90,11 +90,11 @@ export default {
       }
     },
     displaySong(audioFeatures) {
-      const { audio_features: { acousticness, danceability, energy, valence }, song: track } = audioFeatures
+      const { audio_features: { acousticness, danceability, energy, valence, mode }, song: track } = audioFeatures
       const data = [
         {
           name: `${track.artist_name} - ${track.track_name}`,
-          data: [acousticness, danceability, energy, valence],
+          data: [acousticness, danceability, energy, valence, mode],
           pointPlacement: 'on',
         }
       ]
