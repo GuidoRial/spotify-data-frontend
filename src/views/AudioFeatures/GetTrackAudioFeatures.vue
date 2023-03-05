@@ -6,6 +6,7 @@
       <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
       <IndividualStep :stepNumber="2" stepName="Understand the result" :currentStep="currentStep" />
     </div>
+
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Song..." v-model="searchBar" />
       <SearchButton @click="searchSong(this.searchBar)" />
@@ -23,12 +24,15 @@
     <Spinner v-else-if="currentStep === 2 && this.loading" />
 
     <div v-else-if="currentStep === 2">
-      <div>Graph goes here</div>
-      <div>Interpretation goes here</div>
+      <SpiderChart v-if="showGraph" :categories="categories" :series="series" />
+
+      <FieldsExplanation :fieldsArray="fields" />
+
       <RestartButton @click="restart" />
     </div>
   </div>
 </template>
+
 <script>
 import Navbar from "@/components/Navbar.vue";
 import spotifyStore from "@/store/spotify";
@@ -39,6 +43,10 @@ import SongResult from "@/components/SongResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
 import RestartButton from "@/components/RestartButton.vue";
+import SpiderChart from "@/components/Charts/SpiderChart.vue";
+import FieldsExplanation from "@/components/fieldsExplanation.vue";
+import { fields } from './fields.js'
+
 export default {
   name: "get-track-audio-features",
   components: {
@@ -48,7 +56,9 @@ export default {
     SongResult,
     SearchButton,
     Spinner,
-    RestartButton
+    RestartButton,
+    SpiderChart,
+    FieldsExplanation
   },
   data() {
     return {
@@ -56,6 +66,11 @@ export default {
       searchBar: null,
       searchResults: [],
       trackData: null,
+      categories: ['acousticness', 'danceability', 'energy', 'valence'],
+      series: [],
+      showGraph: false,
+      player: undefined,
+      fields: fields
     };
   },
   computed: {
@@ -75,16 +90,29 @@ export default {
       }
     },
     displaySong(audioFeatures) {
-      console.log(audioFeatures);
-      // Receives audio features from event, display in graph
+      const { audio_features: { acousticness, danceability, energy, valence }, song: track } = audioFeatures
+      const data = [
+        {
+          name: `${track.artist_name} - ${track.track_name}`,
+          data: [acousticness, danceability, energy, valence],
+          pointPlacement: 'on',
+        }
+      ]
+      this.series = data
+      this.showGraph = true
     },
+
     restart() {
       this.currentStep = 1;
       this.searchBar = null;
       this.searchResults = [];
       this.trackData = null;
+      this.showGraph = false
     },
+
   },
+
+
 };
 </script>
 <style scoped>
@@ -141,11 +169,12 @@ export default {
 
 .get-track-audio-features {
   background-color: var(--black);
-  height: 89vh;
+  height: 80vh;
 }
 
 .steps {
   display: flex;
   justify-content: center;
   height: 3rem;
-}</style>
+}
+</style>

@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "@/components/Navbar.vue";
 import appFeatures from "./appFeatures";
 import FunctionalitySection from "@/components/FunctionalitySection.vue";
 
@@ -27,6 +27,6 @@ export default {
 .individual-functionality-container {
   background-color: var(--black);
   padding: 1rem 5rem;
-  height: 86vh;
+  height: 76vh;
 }
 </style>

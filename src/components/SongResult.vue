@@ -25,9 +25,9 @@ export default {
   methods: {
     ...mapActions(spotifyStore, ["getTrackAudioFeatures"]),
     async selectSong(id) {
+      const audioFeatures = await this.getTrackAudioFeatures(id);
+      this.$emit("songSelected", audioFeatures);
       this.$emit("goToNextStep");
-      let trackAudioFeatures = await this.getTrackAudioFeatures(id);
-      this.$emit("songSelected", trackAudioFeatures);
     },
     openSongOnSpotify(url) {
       window.open(url, "_blank").focus();
@@ -88,4 +88,5 @@ export default {
 
 #openWithSpotify {
   color: var(--spotify-green);
-}</style>
+}
+</style>

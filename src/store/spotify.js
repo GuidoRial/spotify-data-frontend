@@ -14,7 +14,6 @@ const spotifyStore = defineStore('spotifyStore', {
     async searchForSong(q) {
       try {
         const tracks = await spotify.getSongsOptionsByName(q);
-        console.log(tracks);
         return tracks;
       } catch (e) {
         throw e;
@@ -25,7 +24,6 @@ const spotifyStore = defineStore('spotifyStore', {
         this.loading = true;
         const data = await spotify.getTrackAudioFeatures(id);
         this.loading = false;
-        console.log(data);
         return data;
       } catch (e) {
         throw e;
@@ -390,7 +388,6 @@ const spotifyStore = defineStore('spotifyStore', {
         tracks.sort((a, b) => b.popularity - a.popularity);
 
         console.log('tracks regarding popularity');
-        console.log(tracks);
 
         tracks.splice(40, tracks.length - 50);
 
@@ -403,7 +400,6 @@ const spotifyStore = defineStore('spotifyStore', {
         // }
 
         console.log('tracks with the most popularity');
-        console.log(tracks);
 
         // let songsArray = [];
 

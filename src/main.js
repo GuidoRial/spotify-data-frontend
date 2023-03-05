@@ -7,8 +7,15 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
-import { faMagnifyingGlass, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faRightFromBracket, faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faSpotify, faMagnifyingGlass, faRightFromBracket);
+import VueHighcharts from 'vue3-highcharts';
+
+library.add(faSpotify, faMagnifyingGlass, faRightFromBracket, faPlay, faPause, faForward, faBackward);
 const pinia = createPinia();
-createApp(App).use(pinia).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
+createApp(App)
+  .use(pinia)
+  .use(router)
+  .use(VueHighcharts)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .mount('#app');
