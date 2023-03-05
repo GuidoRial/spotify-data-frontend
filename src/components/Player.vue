@@ -125,8 +125,17 @@ export default {
 <style scoped>
 .container {
   background-color: var(--spotify-gray);
-  height: 100%;
+  height: 6.5rem;
+  width: 50rem;
   padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 1rem;
+  border-radius: 15px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .not-active {

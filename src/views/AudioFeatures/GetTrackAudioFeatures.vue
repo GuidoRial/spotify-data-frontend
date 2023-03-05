@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="get-track-audio-features">
+  <div :style="currentStep === 2 ? { height: '111vh' } : { height: '90vh' }" class="get-track-audio-features">
 
     <div class="steps">
       <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
@@ -116,6 +116,10 @@ export default {
 };
 </script>
 <style scoped>
+.step-two-height {
+  height: 111vh;
+}
+
 .restart-button {
   width: 7rem;
   height: 2rem;
@@ -169,7 +173,7 @@ export default {
 
 .get-track-audio-features {
   background-color: var(--black);
-  height: 80vh;
+  height: 90vh
 }
 
 .steps {
