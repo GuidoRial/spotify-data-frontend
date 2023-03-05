@@ -25,9 +25,9 @@ export default {
   methods: {
     ...mapActions(spotifyStore, ["getTrackAudioFeatures"]),
     async selectSong(id) {
+      const audioFeatures = await this.getTrackAudioFeatures(id);
+      this.$emit("songSelected", audioFeatures);
       this.$emit("goToNextStep");
-      let trackAudioFeatures = await this.getTrackAudioFeatures(id);
-      this.$emit("songSelected", trackAudioFeatures);
     },
     openSongOnSpotify(url) {
       window.open(url, "_blank").focus();
@@ -49,9 +49,11 @@ export default {
   cursor: pointer;
   padding: 0 5px;
 }
+
 .individual-result:hover {
   background-color: var(--spotify-gray);
 }
+
 .track-data {
   display: flex;
   align-items: center;
@@ -59,6 +61,7 @@ export default {
   text-align: left;
   padding: 0.5rem;
 }
+
 .track-name {
   font-weight: 700;
   color: var(--white);
@@ -67,18 +70,22 @@ export default {
 .artist-name {
   color: var(--dark-gray);
 }
+
 .track-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+
 .album-image {
   width: 3rem;
   height: auto;
 }
+
 .track-duration {
   color: var(--gray);
 }
+
 #openWithSpotify {
   color: var(--spotify-green);
 }

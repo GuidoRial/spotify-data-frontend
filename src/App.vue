@@ -1,8 +1,18 @@
 <template>
   <router-view />
+  <Player />
 </template>
 <script>
+import Player from '@/components/Player.vue';
 
+var Highcharts = require('highcharts');
+// Load module after Highcharts is loaded
+require('highcharts/modules/exporting')(Highcharts);
+
+export default {
+  name: "main",
+  components: { Player }
+}
 </script>
 <style>
 #app {

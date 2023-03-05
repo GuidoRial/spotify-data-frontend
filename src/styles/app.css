@@ -12,6 +12,7 @@ html {
 :root {
   --spotify-green: #2aa648;
   --white: #fff;
+  --direction-btn: #BABABA;
   --black: #121212;
   --spotify-gray: #181818;
   --dark-gray: #a9a9a9;
@@ -26,6 +27,10 @@ html {
 
 .basic-gap {
   gap: 1rem;
+}
+
+.basic-link {
+  color: var(--spotify-green);
 }
 
 a {

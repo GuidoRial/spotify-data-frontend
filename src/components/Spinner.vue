@@ -61,9 +61,11 @@ circle {
   0% {
     stroke-dashoffset: 0;
   }
+
   50% {
     stroke-dashoffset: 300;
   }
+
   100% {
     stroke-dashoffset: 600;
   }
@@ -73,8 +75,8 @@ circle {
   from {
     transform: rotate(0turn);
   }
+
   to {
     transform: rotate(-1turn);
   }
-}
-</style>
+}</style>

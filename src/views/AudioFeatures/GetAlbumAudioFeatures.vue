@@ -10,7 +10,8 @@
       <SearchButton @click="searchAlbum(this.searchBar)" />
     </div>
 
-    <Explanation text="Write the name of an album, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+    <Explanation text="Write the name of an album, then click on it..."
+      v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
@@ -23,7 +24,7 @@
     <div v-else-if="currentStep === 2">
       <div>Graph goes here</div>
       <div>Interpretation goes here</div>
-      <RestartButton  @click="restart"/>
+      <RestartButton @click="restart" />
     </div>
   </div>
 </template>
@@ -48,7 +49,7 @@ export default {
     AlbumResult,
     Spinner,
     RestartButton
-},
+  },
   data() {
     return {
       currentStep: 1,
@@ -86,8 +87,6 @@ export default {
 };
 </script>
 <style scoped>
-
-
 .search-result-section {
   height: 70vh;
   overflow: scroll;
@@ -107,6 +106,7 @@ export default {
   gap: 5px;
   margin-bottom: 0.5rem;
 }
+
 .search-button {
   width: 8rem;
   height: 2.3rem;
@@ -120,6 +120,7 @@ export default {
   background-color: var(--white);
   cursor: pointer;
 }
+
 .search-bar {
   width: 40rem;
   height: 1rem;
@@ -127,6 +128,7 @@ export default {
   padding: 0.5rem;
   border: none;
 }
+
 .search-bar:focus,
 .search-bar:active {
   outline: none;
@@ -136,9 +138,9 @@ export default {
   background-color: var(--black);
   height: 89vh;
 }
+
 .steps {
   display: flex;
   justify-content: center;
   height: 3rem;
-}
-</style>
+}</style>

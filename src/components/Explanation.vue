@@ -14,6 +14,7 @@ export default {
 .how-to-use {
   padding: 1rem;
 }
+
 .explanation {
   font-size: 1.5rem;
   color: var(--white);

@@ -29,18 +29,20 @@ export default {
   gap: 0.5rem;
   padding: 0.3rem;
 }
+
 .functionality-title-and-description {
   display: flex;
   gap: 0.3rem;
   align-items: center;
   justify-content: center;
 }
+
 .functionality-title {
   font-size: 1.1rem;
   color: var(--white);
 }
+
 .functionality-description {
   font-size: 1.1rem;
   color: var(--dark-gray);
-}
-</style>
+}</style>

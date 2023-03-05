@@ -1,40 +1,33 @@
 <template>
-  <button class="login-spotify-button" @click="sendRequestToSpotify"><font-awesome-icon icon="fa-brands fa-spotify" />Login with Spotify</button>
+  <button class="login-spotify-button" @click="sendRequestToSpotify"><font-awesome-icon
+      icon="fa-brands fa-spotify" />Login with Spotify</button>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import authStore from "@/store/auth";
 export default {
   name: "login-button",
   data() {
     return {
       AUTH_URL:
-        "https://accounts.spotify.com/authorize?client_id=765707358be3421695e00c9aebb02c4c&response_type=code&redirect_uri=http://localhost:8080/login&scope=streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state",
+        `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&response_type=code&redirect_uri=${process.env.VUE_APP_REDIRECT_URI}&scope=streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state`,
       code: window.location.search.substring(6),
     };
   },
+  computed: {
+    ...mapState(authStore, ["isLoggedIn"])
+  },
   methods: {
     ...mapActions(authStore, ["login"]),
-    async sendRequestToSpotify() {
-      try {
-        window.location.replace(this.AUTH_URL);
-      } catch (e) {
-        throw e;
-      }
+    sendRequestToSpotify() {
+      window.location.replace(this.AUTH_URL);
     },
   },
-  mounted() {
-    if (localStorage.getItem("access-token")) {
-      console.log("Already logged in");
-      this.$router.push("dashboard");
-      return;
-    }
+  async mounted() {
     if (this.code) {
-      localStorage.setItem("code", JSON.stringify(this.code));
-      this.login(this.code);
-      this.$router.push("dashboard");
+      this.login(this.code, this.$router.push);
     }
-  },
+  }
 };
 </script>
 
@@ -54,6 +47,7 @@ export default {
   justify-content: center;
   gap: 0.3rem;
 }
+
 .login-spotify-button:hover {
   opacity: 0.9;
 }

@@ -1,5 +1,6 @@
 <template>
-  <button class="logout-spotify-button" @click="logoutFromApp"><font-awesome-icon icon="fa-solid fa-right-from-bracket" />Log out</button>
+  <button class="logout-spotify-button" @click="logoutFromApp"><font-awesome-icon
+      icon="fa-solid fa-right-from-bracket" />Log out</button>
 </template>
 
 <script>

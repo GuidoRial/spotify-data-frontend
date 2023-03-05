@@ -3,14 +3,16 @@
   <div class="compare-artist-to-related-artists">
     <div class="steps">
       <IndividualStep :stepNumber="1" stepName="Look for an artist" :currentStep="currentStep" />
-      <IndividualStep :stepNumber="2" stepName="See how they compare to their related artists" :currentStep="currentStep" />
+      <IndividualStep :stepNumber="2" stepName="See how they compare to their related artists"
+        :currentStep="currentStep" />
     </div>
     <div class="search-section" v-if="currentStep === 1">
       <input type="text" class="search-bar" placeholder="Artist..." v-model="searchBar" />
       <SearchButton @click="searchArtist(this.searchBar)" />
     </div>
 
-    <Explanation text="Write the name of an artist, then click on it..." v-if="!searchResults?.length && currentStep === 1" />
+    <Explanation text="Write the name of an artist, then click on it..."
+      v-if="!searchResults?.length && currentStep === 1" />
 
     <div class="search-result-section" v-else-if="searchResults?.length && currentStep === 1">
       <div v-for="(result, i) in searchResults" :key="i">
@@ -95,6 +97,7 @@ export default {
   font-weight: 700;
   border-radius: 10px;
 }
+
 .search-result-section {
   height: 70vh;
   overflow: scroll;
@@ -106,11 +109,13 @@ export default {
   gap: 0.5rem;
   z-index: 1;
 }
+
 .steps {
   display: flex;
   justify-content: center;
   height: 3rem;
 }
+
 .search-section {
   display: flex;
   align-items: center;
@@ -118,6 +123,7 @@ export default {
   gap: 5px;
   margin-bottom: 0.5rem;
 }
+
 .search-button {
   width: 8rem;
   height: 2.3rem;
@@ -131,6 +137,7 @@ export default {
   background-color: var(--white);
   cursor: pointer;
 }
+
 .search-bar {
   width: 40rem;
   height: 1rem;
@@ -138,12 +145,13 @@ export default {
   padding: 0.5rem;
   border: none;
 }
+
 .search-bar:focus,
 .search-bar:active {
   outline: none;
 }
+
 .compare-artist-to-related-artists {
   background-color: var(--black);
   height: 89vh;
-}
-</style>
+}</style>

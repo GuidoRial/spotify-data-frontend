@@ -2,19 +2,21 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
 
 # Spotify Data Analysis
 
-
 ## TODO
+
 1. Export example data as JSON so that we don't have to call the API so much, especially for longer queries like comparing artists audio features
+
 ## Functionality
 
 - Get Track's Audio Features, show it using graphs [MVP]
 
   - Individual song [DONE]
+    - Danceability, Energy, Valence, Instrumentalness, Loudness, Tempo
   - Album, compare each song [DONE]
     - Also, get average as an extra graph [DONE]
       - Danceability, Energy, Valence, Instrumentalness, Loudness, Tempo
 
-- Sentiment Analysis [MVP]
+<!-- - Sentiment Analysis [MVP]
 
   - Individual song analysis to see if it has a possitive or negative sentiment [DONE]
   - Album analysis, to see the individual song and album average. [DONE]
@@ -26,7 +28,7 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
     - Album sentiment data
 
   - In each one we could call Get Track's Audio Features and return valence [DONE]
-    - Therefore, we could actually compare the two
+    - Therefore, we could actually compare the two -->
 
 - Compare artist to each other [MVP]
 
@@ -49,10 +51,12 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
   - Same thing but with popular songs
 
 - Most reppeated word within an artist
+
   - Get top 30 songs - What do these songs say that make them the most famous?
   - Get lyrics for all of those songs
   - Calculate the most common words
   - Word cloud
+
   1. Get Artist's Albums
   2. Get Several Albums => push ids to an array, get array length
   3. Get Several Tracks (50 at a time)
@@ -60,3 +64,15 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
   5. Get top 50
   6. Get lyrics
   7. Calculate most common words, return
+
+- Reproduce music [DONE]
+
+  - Ability to reproduce songs that we search for
+
+- Auth [MVP]
+
+  - Setup country, store user data in cookies or localStorage for each session
+
+- Useful links <br /> https://developer.spotify.com/documentation/web-playback-sdk/guide/#running-everything-together https://developer.spotify.com/documentation/web-playback-sdk/reference/ https://github.com/spotify/spotify-web-playback-sdk-example/blob/main/src/WebPlayback.jsx https://www.highcharts.com/demo https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-features
+
+https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-analysis ????
