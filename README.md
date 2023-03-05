@@ -11,10 +11,10 @@ https://developer.spotify.com/documentation/web-api/reference/#/operations/get-r
 - Get Track's Audio Features, show it using graphs [MVP]
 
   - Individual song [DONE]
-    - Danceability, Energy, Valence, Instrumentalness, Loudness, Tempo
+    - Danceability, Energy, Valence, Instrumentalness, Loudness, Mode [DONE]
   - Album, compare each song [DONE]
     - Also, get average as an extra graph [DONE]
-      - Danceability, Energy, Valence, Instrumentalness, Loudness, Tempo
+      - Danceability, Energy, Valence, Instrumentalness, Loudness, Mode
 
 <!-- - Sentiment Analysis [MVP]
 
