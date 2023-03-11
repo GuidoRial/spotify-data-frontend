@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="get-track-audio-features">
+  <div :style="currentStep === 2 ? { height: '118vh' } : { height: '90vh' }" class="get-track-audio-features">
 
     <div class="steps">
       <IndividualStep :stepNumber="1" stepName="Look for a song" :currentStep="currentStep" />
@@ -28,7 +28,13 @@
 
       <FieldsExplanation :fieldsArray="fields" />
 
-      <RestartButton @click="restart" />
+      <div class="btn-group">
+        <BasicButton @click="restart" type="secondary" text="Play song" />
+
+        <BasicButton @click="restart" type="primary" text="Restart?" />
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -42,7 +48,7 @@ import Explanation from "@/components/Explanation.vue";
 import SongResult from "@/components/SongResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
-import RestartButton from "@/components/RestartButton.vue";
+import BasicButton from "@/components/BasicButton.vue";
 import SpiderChart from "@/components/Charts/SpiderChart.vue";
 import FieldsExplanation from "@/components/fieldsExplanation.vue";
 import { fields } from './fields.js'
@@ -56,7 +62,7 @@ export default {
     SongResult,
     SearchButton,
     Spinner,
-    RestartButton,
+    BasicButton,
     SpiderChart,
     FieldsExplanation
   },
@@ -66,7 +72,7 @@ export default {
       searchBar: null,
       searchResults: [],
       trackData: null,
-      categories: ['acousticness', 'danceability', 'energy', 'valence'],
+      categories: ['acousticness', 'danceability', 'energy', 'valence', 'mode'],
       series: [],
       showGraph: false,
       player: undefined,
@@ -90,11 +96,11 @@ export default {
       }
     },
     displaySong(audioFeatures) {
-      const { audio_features: { acousticness, danceability, energy, valence }, song: track } = audioFeatures
+      const { audio_features: { acousticness, danceability, energy, valence, mode }, song: track } = audioFeatures
       const data = [
         {
           name: `${track.artist_name} - ${track.track_name}`,
-          data: [acousticness, danceability, energy, valence],
+          data: [acousticness, danceability, energy, valence, mode],
           pointPlacement: 'on',
         }
       ]
@@ -116,23 +122,10 @@ export default {
 };
 </script>
 <style scoped>
-.restart-button {
-  width: 7rem;
-  height: 2rem;
-  cursor: pointer;
-  background-color: var(--spotify-green);
-  color: var(--white);
-  font-weight: 700;
-  border-radius: 10px;
-}
-
-.how-to-use {
-  padding: 1rem;
-}
-
-.explanation {
-  font-size: 1.5rem;
-  color: var(--white);
+.btn-group {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
 }
 
 .search-result-section {
@@ -157,7 +150,7 @@ export default {
 .search-bar {
   width: 40rem;
   height: 1rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   border: none;
 }
@@ -169,7 +162,7 @@ export default {
 
 .get-track-audio-features {
   background-color: var(--black);
-  height: 80vh;
+  height: 90vh
 }
 
 .steps {

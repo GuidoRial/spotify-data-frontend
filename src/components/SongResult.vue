@@ -23,8 +23,9 @@ export default {
     song: Object,
   },
   methods: {
-    ...mapActions(spotifyStore, ["getTrackAudioFeatures"]),
+    ...mapActions(spotifyStore, ["getTrackAudioFeatures", "storeSongId"]),
     async selectSong(id) {
+      this.storeSongId(id)
       const audioFeatures = await this.getTrackAudioFeatures(id);
       this.$emit("songSelected", audioFeatures);
       this.$emit("goToNextStep");

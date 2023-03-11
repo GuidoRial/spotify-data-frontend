@@ -23,7 +23,7 @@ export default {
   color: var(--spotify-green);
   font-weight: 700;
   cursor: pointer;
-  border-radius: 7px;
+  border-radius: var(--border-small);
   font-size: 0.9rem;
   display: flex;
   align-items: center;

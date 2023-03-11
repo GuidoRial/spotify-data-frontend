@@ -37,7 +37,7 @@ import Explanation from "@/components/Explanation.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import AlbumResult from "@/components/AlbumResult.vue";
 import Spinner from "@/components/Spinner.vue";
-import RestartButton from "@/components/RestartButton.vue";
+import RestartButton from "@/components/BasicButton.vue";
 
 export default {
   name: "get-album-audio-features",
@@ -110,7 +110,7 @@ export default {
 .search-button {
   width: 8rem;
   height: 2.3rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -124,7 +124,7 @@ export default {
 .search-bar {
   width: 40rem;
   height: 1rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   border: none;
 }
@@ -143,4 +143,5 @@ export default {
   display: flex;
   justify-content: center;
   height: 3rem;
-}</style>
+}
+</style>

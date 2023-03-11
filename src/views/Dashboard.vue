@@ -27,6 +27,6 @@ export default {
 .individual-functionality-container {
   background-color: var(--black);
   padding: 1rem 5rem;
-  height: 76vh;
+  height: 85.9vh;
 }
 </style>

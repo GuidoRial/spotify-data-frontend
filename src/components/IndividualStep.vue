@@ -37,7 +37,7 @@ export default {
 
 .step-number-container-selected {
   border: 1px solid var(--black);
-  border-radius: 50%;
+  border-radius: var(--border-round);
   height: 2rem;
   width: 2rem;
   display: flex;
@@ -48,7 +48,7 @@ export default {
 
 .step-number-container-not-selected {
   border: 1px solid var(--white);
-  border-radius: 50%;
+  border-radius: var(--border-round);
   height: 2rem;
   width: 2rem;
   display: flex;
@@ -61,4 +61,5 @@ export default {
   align-items: center;
   gap: 1rem;
   margin: 0 1rem;
-}</style>
+}
+</style>

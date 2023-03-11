@@ -9,7 +9,7 @@
 .search-button {
   width: 8rem;
   height: 2.3rem;
-  border-radius: 30px;
+  border-radius: var(--border-big);
   padding: 0.5rem;
   display: flex;
   align-items: center;

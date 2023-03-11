@@ -37,7 +37,7 @@ export default {
 </script>
 <style scoped>
 .individual-result {
-  border-radius: 5px;
+  border-radius: var(--border-small);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,4 +87,5 @@ export default {
 .album-name {
   font-weight: 700;
   color: var(--white);
-}</style>
+}
+</style>

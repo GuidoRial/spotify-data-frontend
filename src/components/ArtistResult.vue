@@ -37,7 +37,7 @@ export default {
 }
 
 .individual-result {
-  border-radius: 5px;
+  border-radius: var(--border-small);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +56,7 @@ export default {
 .artist-image {
   width: 15rem;
   height: 15rem;
-  border-radius: 50%;
+  border-radius: var(--border-round);
   object-fit: contain;
 }
 
@@ -81,4 +81,5 @@ export default {
   font-weight: 700;
   color: var(--white);
   font-size: 1rem;
-}</style>
+}
+</style>

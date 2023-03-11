@@ -57,9 +57,6 @@ export default {
   computed: {
     ...mapState(authStore, ['accessToken'])
   },
-  beforeDestroy() {
-    this.player.disconnect()
-  },
   async mounted() {
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
@@ -125,8 +122,17 @@ export default {
 <style scoped>
 .container {
   background-color: var(--spotify-gray);
-  height: 100%;
+  height: 6.5rem;
+  width: 50rem;
   padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 1rem;
+  border-radius: var(--border-medium);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .not-active {
@@ -166,7 +172,7 @@ export default {
 .btn-spotify {
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
+  border-radius: var(--border-round);
   display: flex;
   justify-content: center;
   align-items: center;

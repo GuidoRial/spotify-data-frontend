@@ -136,14 +136,14 @@ export default {
   height: 3rem;
   border: 1px solid #bfc0c6;
   background-color: var(--light-soft-blue);
-  border-radius: 5px;
+  border-radius: var(--border-small);
   border: none;
   text-align: left;
 }
 
 .signup-input-field {
   height: 2rem;
-  border-radius: 5px;
+  border-radius: var(--border-small);
   border: 1px solid var(--light-gray-bg);
   padding: 0.4rem;
   background-color: var(--input-bg-gray);
@@ -151,7 +151,7 @@ export default {
 
 .signup-continue-button {
   width: 100%;
-  border-radius: 5px;
+  border-radius: var(--border-small);
   height: 3rem;
   background-color: var(--blue);
   color: var(--white);
