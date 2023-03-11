@@ -28,7 +28,13 @@
 
       <FieldsExplanation :fieldsArray="fields" />
 
-      <RestartButton @click="restart" />
+      <div class="btn-group">
+        <BasicButton @click="restart" type="secondary" text="Play song" />
+
+        <BasicButton @click="restart" type="primary" text="Restart?" />
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -42,7 +48,7 @@ import Explanation from "@/components/Explanation.vue";
 import SongResult from "@/components/SongResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
-import RestartButton from "@/components/RestartButton.vue";
+import BasicButton from "@/components/BasicButton.vue";
 import SpiderChart from "@/components/Charts/SpiderChart.vue";
 import FieldsExplanation from "@/components/fieldsExplanation.vue";
 import { fields } from './fields.js'
@@ -56,7 +62,7 @@ export default {
     SongResult,
     SearchButton,
     Spinner,
-    RestartButton,
+    BasicButton,
     SpiderChart,
     FieldsExplanation
   },
@@ -116,27 +122,10 @@ export default {
 };
 </script>
 <style scoped>
-.step-two-height {
-  height: 111vh;
-}
-
-.restart-button {
-  width: 7rem;
-  height: 2rem;
-  cursor: pointer;
-  background-color: var(--spotify-green);
-  color: var(--white);
-  font-weight: 700;
-  border-radius: var(--border-medium);
-}
-
-.how-to-use {
-  padding: 1rem;
-}
-
-.explanation {
-  font-size: 1.5rem;
-  color: var(--white);
+.btn-group {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
 }
 
 .search-result-section {

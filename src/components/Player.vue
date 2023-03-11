@@ -57,9 +57,6 @@ export default {
   computed: {
     ...mapState(authStore, ['accessToken'])
   },
-  beforeDestroy() {
-    this.player.disconnect()
-  },
   async mounted() {
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";

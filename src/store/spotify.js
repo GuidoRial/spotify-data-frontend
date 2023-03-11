@@ -8,9 +8,13 @@ const spotifyStore = defineStore('spotifyStore', {
   state: () => {
     return {
       loading: false,
+      selectedSong: '',
     };
   },
   actions: {
+    storeSongId(id) {
+      this.selectedSong = id;
+    },
     async searchForSong(q) {
       try {
         const tracks = await spotify.getSongsOptionsByName(q);

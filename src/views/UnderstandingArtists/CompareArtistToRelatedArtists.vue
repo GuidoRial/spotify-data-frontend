@@ -38,7 +38,7 @@ import Explanation from "@/components/Explanation.vue";
 import ArtistResult from "@/components/ArtistResult.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import Spinner from "@/components/Spinner.vue";
-import RestartButton from "@/components/RestartButton.vue";
+import RestartButton from "@/components/BasicButton.vue";
 
 export default {
   name: "comparte-artist-to-related-artists",

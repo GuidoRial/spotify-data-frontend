@@ -37,7 +37,7 @@ import Explanation from "@/components/Explanation.vue";
 import SearchButton from "@/components/SearchButton.vue";
 import AlbumResult from "@/components/AlbumResult.vue";
 import Spinner from "@/components/Spinner.vue";
-import RestartButton from "@/components/RestartButton.vue";
+import RestartButton from "@/components/BasicButton.vue";
 
 export default {
   name: "get-album-audio-features",
