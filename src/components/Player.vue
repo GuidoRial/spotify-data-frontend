@@ -16,32 +16,36 @@
         <div class="artist-and-track-text">
           <p class="now-playing__name">{{currentTrack.track_name}}</p>
           <p class="now-playing__artist">{{currentTrack.artist_name}}</p>
-
         </div>
+
       </div>
 
       <div class="multimedia-buttons">
 
-        <button class="btn-spotify" @click="player.previousTrack()">
+        <button class="btn-spotify" @click="this.handlePlayer({action: 'previous'})">
           <font-awesome-icon icon="fa-solid fa-backward" />
         </button>
 
-        <button class="btn-spotify" @click="player.togglePlay()">
+        <button class="btn-spotify" @click="this.handlePlayer({action: this.isPaused ? 'play' : 'pause'})">
           <font-awesome-icon :icon="isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause'" />
         </button>
 
-        <button class="btn-spotify" @click="player.nextTrack()">
+        <button class="btn-spotify" @click="this.handlePlayer({action: 'next'})">
           <font-awesome-icon icon="fa-solid fa-forward" />
         </button>
       </div>
+
+      <VolumeControl :volume="volume" @volumeChanged="handleVolumeChanged" />
     </div>
   </div>
 </template>
 <script>
 import authStore from "@/store/auth"
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
+import VolumeControl from "./VolumeControl.vue";
+import spotifyStore from "@/store/spotify";
 export default {
-  name: 'player',
+  name: "player",
   data() {
     return {
       isPaused: false,
@@ -49,81 +53,76 @@ export default {
       player: undefined,
       currentTrack: {
         image: "https://i.scdn.co/image/ab67616d00001e0260a908d78ac7ea7f9407fb77",
-        artist_name: 'Some-name',
-        track_name: 'Some-other-name',
+        artist_name: "Some-name",
+        track_name: "Some-other-name",
       },
-    }
+      volume: 0.9,
+    };
   },
   computed: {
-    ...mapState(authStore, ['accessToken'])
+    ...mapState(authStore, ["accessToken"]),
+  },
+  methods: {
+    ...mapActions(spotifyStore, ['handlePlayer']),
+    async handleVolumeChanged(volumeInPercentage) {
+      return await this.player.setVolume(volumeInPercentage / 100);
+    }
   },
   async mounted() {
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
     script.async = true;
-
     document.body.appendChild(script);
-
     window.onSpotifyWebPlaybackSDKReady = () => {
-
       this.player = new window.Spotify.Player({
-        name: 'Web Playback SDK',
+        name: "Web Playback SDK",
         getOAuthToken: cb => { cb(this.accessToken); },
-        volume: 0.5
+        volume: this.volume
       });
-
-      this.player.addListener('ready', ({ device_id }) => {
-        // console.log('Ready with Device ID', device_id);
+      this.player.addListener("ready", ({ device_id }) => {
+        console.log(`Ready with device ID: ${device_id}`);
       });
-
-      this.player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
+      this.player.addListener("not_ready", ({ device_id }) => {
+        console.log(`Device with id ${device_id} has gone offline`);
       });
-
-      this.player.addListener('player_state_changed', (state => {
+      this.player.addListener("player_state_changed", (state => {
         if (!state) {
           return;
         }
-
-        const { current_track } = state.track_window
-
-
-        if (!current_track) this.isActive = false
-
+        const { current_track } = state.track_window;
+        if (!Object.keys(current_track).length || typeof current_track === "undefined") {
+          this.isActive = false;
+          return
+        }
+        else {
+          this.isActive = true;
+        }
         const track = {
           image: current_track.album.images[0].url,
           artist_name: current_track.artists[0]?.name,
           track_name: current_track.name
-        }
-
+        };
         this.currentTrack = track;
         this.isPaused = state.paused;
 
-        this.player.getCurrentState().then(state => {
-          if (!state) {
-            this.isActive = false
-          }
-          this.isActive = true
-
-        });
-
       }));
-
       this.player.connect().then(success => {
         if (success) {
-          // console.log('The Web Playback SDK successfully connected to Spotify!');
+          console.log("The Web Playback SDK successfully connected to Spotify!");
         }
-      })
-
+      }).catch(e => console.log({ e }));
     };
-  }
+
+
+  },
+  components: { VolumeControl }
 }
 </script>
 <style scoped>
 .container {
   background-color: var(--spotify-gray);
   height: 6.5rem;
-  width: 50rem;
+  width: 60rem;
   padding: 2rem;
   display: flex;
   align-items: center;
@@ -143,8 +142,9 @@ export default {
 
 .main-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  width: 100%;
   gap: 2rem;
 }
 
@@ -190,5 +190,12 @@ export default {
 .multimedia-buttons {
   display: flex;
   gap: 1rem;
+}
+
+.volume-selector {
+  appearance: none;
+  background: var(--volume-bg);
+  border-radius: 5px;
+  height: 0.3rem;
 }
 </style>

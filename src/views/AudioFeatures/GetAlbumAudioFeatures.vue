@@ -75,7 +75,7 @@ export default {
       }
     },
     displayData(albumAudioFeatures) {
-      console.log(albumAudioFeatures);
+      // console.log(albumAudioFeatures);
     },
     restart() {
       this.currentStep = 1;

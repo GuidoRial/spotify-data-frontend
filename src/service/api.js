@@ -28,7 +28,8 @@ axiosInstance.interceptors.response.use(
       error.message === 'Request failed with status code 400' ||
       error.message === 'The access token expired' ||
       error.response.data.message === 'Request failed with status code 401' ||
-      error.response.status === 400;
+      error.response.status === 400 ||
+      error.status === 401;
 
     const originalRequest = error.config;
     if (!originalRequest._retry && tokenExpired && retries < 3) {
