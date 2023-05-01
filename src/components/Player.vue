@@ -78,7 +78,7 @@ export default {
       }
     },
     async handleVolumeChanged(volumeInPercentage) {
-      await this.handlePlayer('setVolume', volumeInPercentage)
+      return await this.handlePlayer('setVolume', volumeInPercentage)
     }
   },
   async mounted() {
@@ -102,6 +102,8 @@ export default {
         if (!state) {
           return;
         }
+
+        console.log(state)
         const { current_track } = state.track_window;
         if (!Object.keys(current_track).length || typeof current_track === "undefined") {
           this.isActive = false;
@@ -116,13 +118,17 @@ export default {
         };
         this.currentTrack = track;
         this.isPaused = state.paused;
+
       }));
       this.player.connect().then(success => {
         if (success) {
           console.log("The Web Playback SDK successfully connected to Spotify!");
+
         }
       });
     };
+
+
   },
   components: { VolumeControl }
 }
