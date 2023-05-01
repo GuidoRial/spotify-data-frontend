@@ -66,8 +66,8 @@ export default {
       }
     },
     displayData(data) {
-      console.log("after");
-      console.log(data);
+      // console.log("after");
+      // console.log(data);
     },
     restart() {
       this.currentStep = 1;

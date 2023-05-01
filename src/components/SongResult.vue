@@ -23,15 +23,15 @@ export default {
     song: Object,
   },
   methods: {
-    ...mapActions(spotifyStore, ["getTrackAudioFeatures", "storeSongId"]),
+    ...mapActions(spotifyStore, ["getTrackAudioFeatures", "handlePlayer"]),
     async selectSong(id) {
-      this.storeSongId(id)
       const audioFeatures = await this.getTrackAudioFeatures(id);
-      this.$emit("songSelected", audioFeatures);
+      this.$emit("songSelected", { id, audioFeatures });
       this.$emit("goToNextStep");
     },
-    openSongOnSpotify(url) {
-      window.open(url, "_blank").focus();
+    async openSongOnSpotify(uri) {
+      return await this.handlePlayer({ action: 'play', uri });
+      // @TODO => show toast
     },
     msToMinutesAndSeconds(ms) {
       let minutes = Math.floor(ms / 60000);

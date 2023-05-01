@@ -22,15 +22,15 @@
 
       <div class="multimedia-buttons">
 
-        <button class="btn-spotify" @click="handlePlayer('previousTrack')">
+        <button class="btn-spotify" @click="this.handlePlayer({action: 'previous'})">
           <font-awesome-icon icon="fa-solid fa-backward" />
         </button>
 
-        <button class="btn-spotify" @click="handlePlayer('togglePlay')">
+        <button class="btn-spotify" @click="this.handlePlayer({action: this.isPaused ? 'play' : 'pause'})">
           <font-awesome-icon :icon="isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause'" />
         </button>
 
-        <button class="btn-spotify" @click="handlePlayer('nextTrack')">
+        <button class="btn-spotify" @click="this.handlePlayer({action: 'next'})">
           <font-awesome-icon icon="fa-solid fa-forward" />
         </button>
       </div>
@@ -41,8 +41,9 @@
 </template>
 <script>
 import authStore from "@/store/auth"
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import VolumeControl from "./VolumeControl.vue";
+import spotifyStore from "@/store/spotify";
 export default {
   name: "player",
   data() {
@@ -59,26 +60,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(authStore, ["accessToken"])
+    ...mapState(authStore, ["accessToken"]),
   },
   methods: {
-    async handlePlayer(action, value) {
-      switch (action) {
-        case "previousTrack": {
-          return await this.player.previousTrack();
-        }
-        case "togglePlay": {
-          return await this.player.togglePlay();
-        }
-        case "nextTrack": {
-          return await this.player.nextTrack();
-        }
-        case "setVolume":
-        default: return await this.player.setVolume(value / 100);
-      }
-    },
+    ...mapActions(spotifyStore, ['handlePlayer']),
     async handleVolumeChanged(volumeInPercentage) {
-      return await this.handlePlayer('setVolume', volumeInPercentage)
+      return await this.player.setVolume(volumeInPercentage / 100);
     }
   },
   async mounted() {
@@ -102,11 +89,10 @@ export default {
         if (!state) {
           return;
         }
-
-        console.log(state)
         const { current_track } = state.track_window;
         if (!Object.keys(current_track).length || typeof current_track === "undefined") {
           this.isActive = false;
+          return
         }
         else {
           this.isActive = true;
@@ -123,9 +109,8 @@ export default {
       this.player.connect().then(success => {
         if (success) {
           console.log("The Web Playback SDK successfully connected to Spotify!");
-
         }
-      });
+      }).catch(e => console.log({ e }));
     };
 
 

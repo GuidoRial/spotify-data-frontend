@@ -29,7 +29,7 @@
       <FieldsExplanation :fieldsArray="fields" />
 
       <div class="btn-group">
-        <BasicButton @click="restart" type="secondary" text="Play song" />
+        <BasicButton @click="openSongOnSpotify()" type="secondary" text="Play song" />
 
         <BasicButton @click="restart" type="primary" text="Restart?" />
 
@@ -75,15 +75,19 @@ export default {
       categories: ['acousticness', 'danceability', 'energy', 'valence', 'mode'],
       series: [],
       showGraph: false,
-      player: undefined,
-      fields: fields
+      fields: fields,
+      selectedSongUri: ''
     };
   },
   computed: {
     ...mapState(spotifyStore, ["loading"]),
   },
   methods: {
-    ...mapActions(spotifyStore, ["searchForSong", "getTrackAudioFeatures"]),
+    ...mapActions(spotifyStore, ["searchForSong", "getTrackAudioFeatures", "handlePlayer"]),
+    async openSongOnSpotify(uri) {
+      return await this.handlePlayer({ action: 'play', uri: this.selectedSongUri });
+      // @TODO => show toast
+    },
     async searchSong(searchBar) {
       try {
         if (this.searchResults.length) this.searchResults = [];
@@ -95,8 +99,8 @@ export default {
         throw e;
       }
     },
-    displaySong(audioFeatures) {
-      const { audio_features: { acousticness, danceability, energy, valence, mode }, song: track } = audioFeatures
+    displaySong(songData) {
+      const { audio_features: { acousticness, danceability, energy, valence, mode }, song: track } = songData
       const data = [
         {
           name: `${track.artist_name} - ${track.track_name}`,
@@ -106,6 +110,7 @@ export default {
       ]
       this.series = data
       this.showGraph = true
+      this.selectedSongUri = track.songUri
     },
 
     restart() {
@@ -113,7 +118,8 @@ export default {
       this.searchBar = null;
       this.searchResults = [];
       this.trackData = null;
-      this.showGraph = false
+      this.showGraph = false;
+      this.selectedSongUri = '';
     },
 
   },

@@ -12,13 +12,12 @@ const spotifyStore = defineStore('spotifyStore', {
     };
   },
   actions: {
-    storeSongId(id) {
-      this.selectedSong = id;
+    async handlePlayer({ action, uri }) {
+      return await spotify.handlePlayer({ action, uri });
     },
     async searchForSong(q) {
       try {
-        const tracks = await spotify.getSongsOptionsByName(q);
-        return tracks;
+        return await spotify.getSongsOptionsByName(q);
       } catch (e) {
         throw e;
       }
